@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtjudul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Tauhid"
+        android:layout_marginLeft="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtlihat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lihat"
+            android:textStyle="italic"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:id="@+id/txtdownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:textStyle="italic"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/txtlihat"/>
+
+    </LinearLayout>
+
+</LinearLayout>

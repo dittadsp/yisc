@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#fff">
+
+    <LinearLayout
+        android:id="@+id/jadwal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="3"
+            android:gravity="left" />
+
+        <TextView
+            android:id="@+id/bulan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Februari"
+            android:gravity="left"
+           />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/infoLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="100dp"
+      >
+        <TextView
+            android:id="@+id/nama"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Ust Subhan"
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/materi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="halal haram...................."
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/tempat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:text="Pendidikan"
+            android:gravity="left"/>
+    </LinearLayout>
+
+</RelativeLayout>

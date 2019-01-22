@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_profil"
+            android:icon="@drawable/ic_menu_person"
+            android:title="Profil" />
+        <item
+            android:id="@+id/nav_pendidikan"
+            android:icon="@drawable/ic_menu_school"
+            android:title="Pendidikan" />
+        <item
+            android:id="@+id/nav_pesan"
+            android:icon="@drawable/ic_menu_message"
+            android:title="Pesan" />
+        <item
+            android:id="@+id/nav_pendaftaran"
+            android:icon="@drawable/ic_menu_person_add"
+            android:title="Pendaftaran" />
+        <item
+            android:id="@+id/nav_kajian"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Kajian" />
+
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Logout" />
+    </group>
+</menu>

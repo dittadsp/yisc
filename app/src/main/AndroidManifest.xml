@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.memberapps2">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+        android:name=".AppController"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_logo3"
+        android:label="YISC Al Azhar"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".WelcomeActivity"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".LoginActivity"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Home"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".VideoKajianActivity"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+    </application>
+
+</manifest>
