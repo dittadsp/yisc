@@ -33,11 +33,19 @@ public class Sii extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Jadwal jadwal = new Jadwal();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameSii, jadwal);
-                fragmentTransaction.commit();
+                if(i== 0) {
+                    Jadwal jadwal = new Jadwal();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.framebsq, jadwal);
+                    fragmentTransaction.commit();
+                }else if ( i == 2){
+                    QuizList quiz = new QuizList();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.framebsq, quiz);
+                    fragmentTransaction.commit();
+                }
             }
 
         });

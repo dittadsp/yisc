@@ -33,7 +33,6 @@ public class JadwalAdapter extends ArrayAdapter<InfoJadwal> {
         }
 
         InfoJadwal jadwal = getItem(position);
-
         nama = (TextView) convertView.findViewById(R.id.nama);
         nama.setText(jadwal.getNama());
         nama.setTextColor(Color.BLACK);

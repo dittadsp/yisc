@@ -9,6 +9,7 @@ import Fragment.VideoKajian;
 import model.Artikel;
 import model.InfoJadwal;
 import model.InfoKajian;
+import model.InfoListQuiz;
 import model.InfoListSchedule;
 import model.Kajian;
 import model.ListSchedule;
@@ -36,9 +37,9 @@ public interface Endpoint {
     @POST("api/members/login")
     Call<UserList> responseUser(@Body UserLogin requestUser);
 
-    @Headers("Content-Type: application/json")
-    @POST("api/pendidikan/jadwallist")
-    Call<InfoListSchedule> responseJadwal(@Body UserSchedule requestSchedule);
+    @Multipart
+    @POST("api/pendidikan/quizlist")
+    Call<InfoListQuiz> getQuiz (@Part("key") RequestBody key, @Part ("user_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/jadwallist")
