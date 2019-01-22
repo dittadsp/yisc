@@ -16,6 +16,8 @@ public class InfoJadwal {
         this.tanggal = tanggal;
         this.waktu = waktu;
         this.tempat = tempat;
+        this.nama = nama;
+        this.tipe = tipe;
 
     }
         public void setId(String id) {

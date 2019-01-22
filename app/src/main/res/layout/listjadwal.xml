@@ -28,7 +28,7 @@
             android:textSize="20dp"
             android:text="Februari"
             android:gravity="left"
-           />
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +39,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="100dp"
-      >
+        >
         <TextView
             android:id="@+id/nama"
             android:textStyle="bold"

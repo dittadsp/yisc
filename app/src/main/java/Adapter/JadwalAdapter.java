@@ -2,6 +2,8 @@ package Adapter;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +34,23 @@ public class JadwalAdapter extends ArrayAdapter<InfoJadwal> {
 
         InfoJadwal jadwal = getItem(position);
 
-//        Log.d("JADWAl",jadwal.getNama());
-//        nama = (TextView) convertView.findViewById(R.id.nama);
-//        nama.setText(jadwal.getNama());
+        nama = (TextView) convertView.findViewById(R.id.nama);
+        nama.setText(jadwal.getNama());
+        nama.setTextColor(Color.BLACK);
         tanggal = (TextView) convertView.findViewById(R.id.tanggal);
-        date = jadwal.getTanggal().substring(7,8);
-        tanggal.setText((CharSequence) jadwal.getTanggal());
+        date = jadwal.getTanggal().substring(9,10);
+        tanggal.setText(date);
+        tanggal.setTextColor(Color.BLACK);
         bulan = (TextView) convertView.findViewById(R.id.bulan);
-        month = jadwal.getTanggal().substring(4,6);
-        bulan.setText(jadwal.getTanggal());
+        month = jadwal.getTanggal().substring(6,7);
+        bulan.setText(arrmonth[Integer.parseInt(month)-1]);
+        bulan.setTextColor(Color.BLACK);
         materi = (TextView) convertView.findViewById(R.id.materi);
         materi.setText(jadwal.getTema());
+        materi.setTextColor(Color.BLACK);
         tempat = (TextView) convertView.findViewById(R.id.tempat);
         tempat.setText(jadwal.getTempat());
+        tempat.setTextColor(Color.BLACK);
 
         return convertView;
     }
