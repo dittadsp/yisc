@@ -1,69 +1,45 @@
 package adapter;
 
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.memberapps2.R;
 
-public class NilaiAdapter extends BaseAdapter {
-    TextView text1, text2, text3;
-    ImageView imgView;
-    String[][] data;
-    Activity activity;
+import java.util.ArrayList;
 
-    public NilaiAdapter(Activity activity, String[][] data) {
-        super();
-        this.data = data;
-        this.activity = activity;
-    }
-    @Override
-    public int getCount() {
-        return data.length;
-    }
+import model.NilaiList;
 
-    @Override
-    public Object getItem(int position) {
-        return data[position];
-    }
+public class NilaiAdapter extends ArrayAdapter<NilaiList.Datum> {
+    TextView tema, score, updateat;
+    private Context context;
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
+    public NilaiAdapter(Context context, ArrayList<NilaiList.Datum> nilaiAdapter) {
+        super(context, 0, nilaiAdapter);
+        this.context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
-
-        if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(activity);
-            v = vi.inflate(R.layout.mylistnilai, null);
+        if (convertView == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+            convertView = layoutInflater.inflate(R.layout.mylistnilai, null);
         }
+        NilaiList.Datum Datum = getItem(position);
+        tema = (TextView) convertView.findViewById(R.id.txttema);
+        tema.setText(Datum.getParticipantQuiz());
+        tema.setTextColor(Color.RED);
+        score = (TextView) convertView.findViewById(R.id.txtscore);
+        score.setText(Datum.getParticipantScore());
+        score.setTextColor(Color.RED);
+        updateat = (TextView) convertView.findViewById(R.id.txtupdateat);
+        updateat.setText(Datum.getUpdatedAt());
+        updateat.setTextColor(Color.RED);
 
-        Object p = getItem(position);
-
-        if (p != null) {
-            text1 = (TextView) v.findViewById(R.id.Itemname4);
-            text2 = (TextView) v.findViewById(R.id.Desc4);
-            text3 = (TextView) v.findViewById(R.id.Time4);
-            imgView = (ImageView) v.findViewById(R.id.image4);
-
-            int id = activity.getResources().getIdentifier(data[position][3], "drawable", activity.getPackageName());
-            Drawable drawable = activity.getResources().getDrawable(id);
-
-            text1.setText(data[position][0]);
-            text2.setText(data[position][1]);
-            text3.setText(data[position][2]);
-            imgView.setImageDrawable(drawable);
-        }
-
-        return v;
+        return convertView;
     }
 }

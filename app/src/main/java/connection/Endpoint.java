@@ -13,6 +13,8 @@ import model.InfoListQuiz;
 import model.InfoListSchedule;
 import model.Kajian;
 import model.ListSchedule;
+import model.MateriList;
+import model.NilaiList;
 import model.UserList;
 import model.UserLogin;
 import model.UserMember;
@@ -44,6 +46,14 @@ public interface Endpoint {
     @Multipart
     @POST("api/pendidikan/jadwallist")
     Call<InfoListSchedule> getJadwal (@Part("key") RequestBody key, @Part ("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("api/pendidikan/materilist")
+    Call<MateriList> getMateri (@Part("key") RequestBody key, @Part ("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("api/pendidikan/nilailist")
+    Call<NilaiList> getNilai (@Part("key") RequestBody key, @Part ("user_id") RequestBody user_id);
 
     @GET("api/members/{key}/{user_id}")
     Call<UserMember> responseMember(@Query(value = "key") String key, @Query(value = "user_id") String user_id);

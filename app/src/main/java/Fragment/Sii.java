@@ -27,23 +27,35 @@ public class Sii extends Fragment {
                 {"Nilai", "", "", "ic_menu_home"},
         };
         View view = inflater.inflate(R.layout.fragment_sii, container, false);
-        lv = (ListView) view.findViewById(R.id.listViewSii);
+        lv = (ListView) view.findViewById(R.id.listViewsii);
         InfoAdapter adapter = new InfoAdapter(this.getActivity(), title);
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i== 0) {
+                if (i == 0) {
                     Jadwal jadwal = new Jadwal();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, jadwal);
+                    fragmentTransaction.replace(R.id.framesii, jadwal);
                     fragmentTransaction.commit();
-                }else if ( i == 2){
+                } else if (i == 1) {
+                    Materi materi = new Materi();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.framesii, materi);
+                    fragmentTransaction.commit();
+                } else if (i == 2) {
                     QuizList quiz = new QuizList();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, quiz);
+                    fragmentTransaction.replace(R.id.framesii, quiz);
+                    fragmentTransaction.commit();
+                } else if (i == 3) {
+                    Nilai nilai = new Nilai();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.framesii, nilai);
                     fragmentTransaction.commit();
                 }
             }
