@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -44,12 +47,23 @@ public class QuizList extends Fragment {
     String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quiz_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_quiz, container, false);
 
         lv = (ListView) view.findViewById(R.id.listViewQuiz);
 
         quizAdapter = new QuizAdapter(getActivity().getApplicationContext(), quizArrayList);
         lv.setAdapter(quizAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Question question = new Question();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.framebsq, question);
+                fragmentTransaction.commit();
+            }
+
+        });
         loadData();
         return view;
     }

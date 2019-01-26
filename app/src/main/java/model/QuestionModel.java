@@ -10,6 +10,9 @@ public class QuestionModel {
     @SerializedName("status")
     @Expose
     private Boolean status;
+    @SerializedName("message")
+    @Expose
+    private String message;
     @SerializedName("data")
     @Expose
     private List<QuestionsList> data = null;
@@ -22,9 +25,15 @@ public class QuestionModel {
         this.status = status;
     }
 
-    public List<QuestionsList> getData() {
-        return data;
+    public String getMessage() {
+        return message;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<QuestionsList> getData() { return data;}
 
     public void setData(List<QuestionsList> data) {
         this.data = data;

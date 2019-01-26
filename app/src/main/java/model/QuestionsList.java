@@ -8,18 +8,23 @@ public class QuestionsList {
     private String quiz_title;
     private String quiz_desc;
     private String question_text;
+    private String question_id;
     private String question_type;
     private String quiz_time;
     private List<OptionList> options = null;
 
-    public QuestionsList(String quiz_id, String quiz_title , String quiz_desc, String question_text, String question_type, String quiz_time,List<OptionList> options){
+    public QuestionsList(String question_id, String quiz_title, String quiz_desc, String question_text, String quiz_time, List<OptionList> options) {
 
-        this.quiz_id = quiz_id;
+        this.question_id = question_id;
         this.quiz_title = quiz_title;
         this.quiz_desc = quiz_desc;
         this.question_text = question_text;
         this.quiz_time = quiz_time;
         this.options = options;
+    }
+
+    public String getQuestion_id() {
+        return question_id;
     }
 
     public String getQuiz_id() {
