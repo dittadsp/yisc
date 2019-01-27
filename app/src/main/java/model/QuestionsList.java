@@ -13,11 +13,9 @@ public class QuestionsList {
     private String quiz_time;
     private List<OptionList> options = null;
 
-    public QuestionsList(String question_id, String quiz_title, String quiz_desc, String question_text, String quiz_time, List<OptionList> options) {
+    public QuestionsList(String question_id,String question_text, String quiz_time, List<OptionList> options) {
 
         this.question_id = question_id;
-        this.quiz_title = quiz_title;
-        this.quiz_desc = quiz_desc;
         this.question_text = question_text;
         this.quiz_time = quiz_time;
         this.options = options;

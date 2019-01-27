@@ -3,13 +3,21 @@ package Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.memberapps2.R;
@@ -50,14 +58,24 @@ public class Question extends Fragment {
     private boolean loadMore = false;
     String question_id, quiz_id, quiz_title, quiz_desc, quiz_time, question_text;
     String option_id, option_no, option_text, option_value;
-
+    TextView txtquestion;
+    QuestionsList questionsList;
+     RadioButton[] rb;
+     RadioGroup rg;
+     int qid = 1;
+     QuestionsList currentQ ;
+     LinearLayout mLinearLayout;
+     private View view;
+    String[] ab ={"1","2"};
+    RadioButton radioButtonView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_question, container, false);
-        lv = (ListView) view.findViewById(R.id.listViewQuestion);
-        QuestionAdapter questionAdapter = new QuestionAdapter(getActivity().getApplicationContext(), quizArrayList);
-        lv.setAdapter(questionAdapter);
-        loadData();
+         view = inflater.inflate(R.layout.fragment_question, container, false);
+
+//        currentQ=listQuiz.get(qid);
+
+//        loadData();
+        takeAction();
         return view;
     }
 
@@ -71,16 +89,16 @@ public class Question extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         String id = sharedPref.getString("id", "");
 
-        question(KEY_ANDROID, "", "1");
+        question(KEY_ANDROID, "", "2");
     }
 
     private void question(String key, String type, String quiz_id) {
         Log.i("masuk", "question");
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), quiz_id);
+        RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), quiz_id);
 
-        RetroClient.getClient().create(Endpoint.class).getQuestion(u_key, u_id).enqueue(new Callback<QuestionModel>() {
+        RetroClient.getClient().create(Endpoint.class).getQuestion(u_key, u_quizid).enqueue(new Callback<QuestionModel>() {
             @Override
             public void onResponse(Call<QuestionModel> call, Response<QuestionModel> response) {
                 if (response.isSuccessful()) {
@@ -93,20 +111,27 @@ public class Question extends Fragment {
                     listQuiz = response.body().getData();
                     for (int i = 0; i < listQuiz.size(); i++) {
                         question_id = listQuiz.get(i).getQuiz_id();
-                        quiz_title = listQuiz.get(i).getQuiz_title();
-                        quiz_desc = listQuiz.get(i).getQuiz_desc();
                         question_text = listQuiz.get(i).getQuestion_text();
                         quiz_time = listQuiz.get(i).getQuiz_time();
+                        listOption = listQuiz.get(i).getOptions();
 
-//                        for (int k = 0; k < listOption.size(); k++) {
-//                            option_id = listOption.get(k).getOptionId();
-//                            option_no = listOption.get(k).getOptionNo();
-//                            option_text = listOption.get(k).getOptionText();
-//                            option_value = listOption.get(k).getOptionValue();
-//                        }
-                        quizArrayList.add(new QuestionsList(question_id, quiz_title, quiz_desc, question_text, quiz_time, listOption));
+                        for (int k = 0; k < listOption.size(); k++) {
+                            option_id = listOption.get(k).getOptionId();
+                            option_no = listOption.get(k).getOptionNo();
+                            option_text = listOption.get(k).getOptionText();
+                            option_value = listOption.get(k).getOptionValue();
+                        }
+
+                       questionsList =  new QuestionsList(question_id,question_text, quiz_time, listOption);
                     }
-                    questionAdapter.notifyDataSetChanged();
+                 Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                takeAction();
+
+                            }
+                        }, 3000);
                 }
             }
 
@@ -116,5 +141,74 @@ public class Question extends Fragment {
                 pDialog.dismiss();
             }
         });
+    }
+
+
+
+    private void takeAction()
+    {
+//        currentQ=listQuiz.get(qid);
+        txtquestion = (TextView) view.findViewById(R.id.txtquestion);
+//        txtquestion.setText(listQuiz.get(0).getQuestion_text());
+//        txtquestion.setTextColor(Color.BLACK);
+//        rg = new RadioGroup(getContext());
+//        rg.setOrientation(RadioGroup.VERTICAL);
+//        rb = new RadioButton[questionsList.getOptions().size()];
+        mLinearLayout = (LinearLayout) view.findViewById(R.id.linear1);
+//        for (int i = 0; i < questionsList.getOptions().size(); i++) {
+//            rg.addView(rb[i]);
+//            rb[i].setText("ditta");
+//        }
+//        mLinearLayout.addView(rg);
+        final RadioGroup radioGroup = new RadioGroup(getContext());
+
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.FILL_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // adding Radio Group
+        mLinearLayout.addView(radioGroup, p);
+
+        // creating Radio buttons Object//
+//        RadioButton radioButtonView = new RadioButton(this);
+
+
+        for(int i =0; i<ab.length;i++)
+        {
+             radioButtonView = new RadioButton(getContext());
+            radioButtonView.setText(ab[i]);
+            radioButtonView.setId(i);
+            radioGroup.addView(radioButtonView, p);
+//            ((ViewGroup)mLinearLayout.getParent()).removeView(mLinearLayout);
+        }
+        Button btnnext = (Button) view.findViewById(R.id.btnnext);
+        btnnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selection = radioGroup.getCheckedRadioButtonId();
+                for (int i = 0; i < ab.length; i++)
+                {
+                    if (i == selection)
+                        Toast.makeText(getContext(),ab[i] ,Toast.LENGTH_LONG).show();
+                }
+//                currentQ=listQuiz.get(qid);
+//                if(Integer.parseInt(question_id )== qid)
+//                    setQuestionView();
+            }
+        });
+
+
+    }
+
+    private void setQuestionView(){
+        txtquestion.setText(questionsList.getQuestion_text());
+//        for (int i = 0; i < questionsList.getOptions().size(); i++) {
+//            rg.addView(rb[i]);
+//            rb[i].setText(questionsList.getOptions().get(i).getOptionText());
+//        }
+        mLinearLayout.addView(rg);
+
+        qid++;
     }
 }

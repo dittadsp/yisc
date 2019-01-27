@@ -39,25 +39,25 @@ public class Bsq extends Fragment {
                     Jadwal jadwal = new Jadwal();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, jadwal);
+                    fragmentTransaction.replace(R.id.frameinfoquiz, jadwal);
                     fragmentTransaction.commit();
                 } else if (i == 1) {
                     Materi materi = new Materi();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, materi);
+                    fragmentTransaction.replace(R.id.frameinfoquiz, materi);
                     fragmentTransaction.commit();
                 } else if (i == 2) {
                     QuizList quiz = new QuizList();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, quiz);
+                    fragmentTransaction.replace(R.id.frameinfoquiz, quiz);
                     fragmentTransaction.commit();
                 } else if (i == 3) {
                     Nilai nilai = new Nilai();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.framebsq, nilai);
+                    fragmentTransaction.replace(R.id.frameinfoquiz, nilai);
                     fragmentTransaction.commit();
                 }
             }

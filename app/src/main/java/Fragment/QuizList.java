@@ -59,7 +59,7 @@ public class QuizList extends Fragment {
                 Question question = new Question();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.framebsq, question);
+                fragmentTransaction.replace(R.id.frameinfoquiz, question);
                 fragmentTransaction.commit();
             }
 

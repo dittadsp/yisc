@@ -5,18 +5,31 @@
     android:orientation="vertical"
     android:background="#fff">
 
-    <FrameLayout
-        android:id="@+id/frameQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <ListView
-            android:id="@+id/listViewQuestion"
+        <TextView
+            android:id="@+id/txtquestion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+        <LinearLayout android:id="@+id/linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnnext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Next"
+            android:textColor="@android:color/holo_blue_light"/>
+
+        <!--<ListView-->
+            <!--android:id="@+id/listViewQuestion"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</ListView>-->
+
 
 
 

@@ -13,7 +13,7 @@ import android.widget.ListView;
 import com.memberapps2.R;
 
 import Adapter.InfoAdapter;
-import adapter.NilaiAdapter;
+
 
 public class Sii extends Fragment {
     ListView lv;
