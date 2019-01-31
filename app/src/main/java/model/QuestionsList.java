@@ -1,5 +1,7 @@
 package model;
 
+import android.graphics.BitmapFactory;
+
 import java.util.List;
 
 public class QuestionsList {
@@ -13,13 +15,14 @@ public class QuestionsList {
     private String quiz_time;
     private List<OptionList> options = null;
 
-    public QuestionsList(String question_id,String question_text, String quiz_time, List<OptionList> options) {
+    public QuestionsList(String question_id, String question_text, String quiz_time, List<OptionList> options) {
 
         this.question_id = question_id;
         this.question_text = question_text;
         this.quiz_time = quiz_time;
         this.options = options;
     }
+
 
     public String getQuestion_id() {
         return question_id;

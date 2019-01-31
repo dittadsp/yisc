@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -110,7 +111,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<UserList> call, Throwable t) {
-
+                Toast.makeText(getApplication(),"Bad username or password",Toast.LENGTH_LONG).show();
+                Intent inten = new Intent(LoginActivity.this, WelcomeActivity.class);
+                startActivity(inten);
             }
         });
 

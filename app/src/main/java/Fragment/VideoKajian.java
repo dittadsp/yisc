@@ -64,33 +64,8 @@ public class VideoKajian extends Fragment {
 
         showVideo();
 
-//        playerView = (YouTubePlayerView)view.findViewById(R.id.player);
-//        YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-//        android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.add(R.id.playerVideo, youTubePlayerFragment).commit();
-//
-//        youTubePlayerFragment.initialize("AIzaSyD9-nbKBoUys23cVeHpZFUd4Yj8di_a09A", new YouTubePlayer.OnInitializedListener() {
-//
-//            @Override
-//            public void onInitializationSuccess(YouTubePlayer.Provider arg0, YouTubePlayer youTubePlayer, boolean b) {
-//                if (!b) {
-//                    player = youTubePlayer;
-////                    player.setFullscreen(true);
-//                    player.loadVideo("1pnBat4vmJs");
-//                    player.play();
-//                }
-//            }
-//
-//            @Override
-//            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-//
-//            }
-//
-//        });
-
         Log.i("masuk", "masuk video");
 
-//        VideoKajian("snippet", "UCLGTGGY_KFCAtb11zhy6xHA", "AIzaSyD9-nbKBoUys23cVeHpZFUd4Yj8di_a09A");
         return view;
     }
 

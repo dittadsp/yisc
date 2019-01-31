@@ -8,13 +8,19 @@
         <TextView
             android:id="@+id/txtquestion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"/>
 
         <LinearLayout android:id="@+id/linear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnnext"
@@ -24,14 +30,19 @@
             android:text="Next"
             android:textColor="@android:color/holo_blue_light"/>
 
-        <!--<ListView-->
-            <!--android:id="@+id/listViewQuestion"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-        <!--</ListView>-->
-
-
-
-
+                <TextView
+                    android:id="@+id/txttimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="30dp"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnsubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="SUBMIT"/>
 
 </LinearLayout>

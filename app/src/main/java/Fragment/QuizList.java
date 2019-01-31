@@ -56,11 +56,16 @@ public class QuizList extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Question question = new Question();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameinfoquiz, question);
-                fragmentTransaction.commit();
+                if(quiz_status!="0") {
+                   QuestionFragment question = new QuestionFragment();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("quiz_id", i + 1);
+                    question.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.frameinfoquiz, question);
+                    fragmentTransaction.commit();
+                }
             }
 
         });
@@ -77,7 +82,6 @@ public class QuizList extends Fragment {
         pDialog.show();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         String id = sharedPref.getString("id", "");
-
         schedule(KEY_ANDROID,"23");
     }
 

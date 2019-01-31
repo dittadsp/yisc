@@ -5,6 +5,10 @@ package connection;
 import android.util.Log;
 
 //import datasource.remote.NewsFeedResponse;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+
 import Fragment.VideoKajian;
 import model.Artikel;
 import model.InfoJadwal;
@@ -15,8 +19,11 @@ import model.Kajian;
 import model.ListSchedule;
 import model.MateriList;
 import model.NilaiList;
+import model.Question;
 import model.QuestionModel;
 import model.QuestionsList;
+import model.SubmitData;
+import model.SubmitModel;
 import model.UserList;
 import model.UserLogin;
 import model.UserMateri;
@@ -29,6 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -44,6 +52,19 @@ public interface Endpoint {
 
     @POST("api/pendidikan/quiz")
     Call<QuestionModel> responseQuiz(@Body UserMateri requestUser);
+
+//    @Headers({
+//            "Content-Type: application/json",
+//            "x-access-token: eyJhbGciOiJIU"
+//    })
+    @POST("api/pendidikan/quiz_submit")
+    Call<SubmitData> responseSubmit(@Body SubmitModel data);
+
+    @Multipart
+    @POST("api/pendidikan/quiz_submit")
+    Call<SubmitData> submitQuiz(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id,
+    @Part("quiz_id") RequestBody quiz_id, @Part("date_start") RequestBody date_start,@Part("date_end") RequestBody date_end, @Query("question_id[]") RequestBody question_id,
+                                  @Query("question_answer[]") RequestBody question_answer);
 
     @Multipart
     @POST("api/pendidikan/quizlist")
@@ -94,6 +115,7 @@ public interface Endpoint {
 
     @GET("search/{part}/{channelId}/{key}")
     Call<ResponseBody> responseVideo(@Query(value = "part") String part, @Query(value = "channelId") String channelId, @Query(value = "key") String key);
+
 
 //    @GET("api/articles/index/")
 //    Call<NewsFeedResponse> getNewsFeed();
