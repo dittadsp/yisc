@@ -70,8 +70,8 @@ public class QuestionFragment extends Fragment {
     String option_id, option_no, option_text, option_value,questionid_option;
     TextView txtquestion,txttimer;
     QuestionsList questionsList;
-     int qid = 1,id;
-     String user_id;
+     int qid = 1;
+     String user_id,id;
      LinearLayout mLinearLayout,sLinearLayout;
      private View view;
     String[] option ={"A","B","C","D","E"};
@@ -107,8 +107,8 @@ public class QuestionFragment extends Fragment {
         pDialog.setCancelable(true);
         pDialog.show();
         Bundle bundle = this.getArguments();
-         id  = bundle.getInt("quiz_id", 0);
-        question(KEY_ANDROID, "", String.valueOf(id));
+         id  = bundle.getString("quiz_id", "");
+        question(KEY_ANDROID, "", ""+id);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         user_id = sharedPref.getString("id", "");
     }
@@ -279,7 +279,7 @@ public class QuestionFragment extends Fragment {
                         }
                     }
 
-                    submitAnswer2();
+                    submitAnswer();
                 }
             });
             btnnext.setVisibility(View.GONE);
@@ -329,7 +329,7 @@ public class QuestionFragment extends Fragment {
         }
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
-        RequestBody u_user_id = RequestBody.create(MediaType.parse("text/plain"), "3");
+        RequestBody u_user_id = RequestBody.create(MediaType.parse("text/plain"), "1190105");
         RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), ""+id);
         RequestBody u_date_start = RequestBody.create(MediaType.parse("text/plain"), ""+getCurrentDateTime());
         RequestBody u_date_end = RequestBody.create(MediaType.parse("text/plain"), ""+end);

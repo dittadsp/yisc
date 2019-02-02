@@ -44,7 +44,7 @@ public class QuizList extends Fragment {
     private int load = 1;
     private Context context;
     private boolean loadMore = false;
-    String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status;
+    String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status,id_quiz;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
@@ -61,7 +61,7 @@ public class QuizList extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("quiz_id", i + 1);
+                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
                     question.setArguments(bundle);
                     fragmentTransaction.replace(R.id.frameinfoquiz, question);
                     fragmentTransaction.commit();

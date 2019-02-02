@@ -62,13 +62,13 @@ public interface Endpoint {
 
     @Multipart
     @POST("api/pendidikan/quiz_submit")
-    Call<SubmitData> submitQuiz(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id,
-    @Part("quiz_id") RequestBody quiz_id, @Part("date_start") RequestBody date_start,@Part("date_end") RequestBody date_end, @Query("question_id[]") RequestBody question_id,
-                                  @Query("question_answer[]") RequestBody question_answer);
+    Call<SubmitData> submitQuiz(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id,
+    @Part("quiz_id") RequestBody quiz_id, @Part("date_start") RequestBody date_start,@Part("date_end") RequestBody date_end, @Part("question_id[]") RequestBody question_id,
+                                  @Part("question_answer[]") RequestBody question_answer);
 
     @Multipart
     @POST("api/pendidikan/quizlist")
-    Call<InfoListQuiz> getQuiz(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
+    Call<InfoListQuiz> getQuiz(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/quiz")
@@ -76,18 +76,18 @@ public interface Endpoint {
 
     @Multipart
     @POST("api/pendidikan/jadwallist")
-    Call<InfoListSchedule> getJadwal(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
+    Call<InfoListSchedule> getJadwal(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/materilist")
-    Call<MateriList> getMateri(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
+    Call<MateriList> getMateri(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/nilailist")
-    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
+    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
 
     @GET("api/members/{key}/{user_id}")
-    Call<UserMember> responseMember(@Query(value = "key") String key, @Query(value = "user_id") String user_id);
+    Call<UserMember> responseMember(@Query(value = "key") String key, @Query(value = "member_id") String user_id);
 
     @GET("api/articles/index/{page}")
     Call<Artikel> responseArtikel(@Query(value = "page") String page);

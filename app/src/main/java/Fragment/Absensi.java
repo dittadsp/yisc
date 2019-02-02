@@ -9,7 +9,8 @@ import android.widget.ListView;
 
 import com.memberapps2.R;
 
-import adapter.AbsensiAdapter;
+import Adapter.AbsensiAdapter;
+;
 
 public class Absensi extends Fragment {
     ListView lv;
