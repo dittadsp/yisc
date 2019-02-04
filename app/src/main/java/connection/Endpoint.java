@@ -63,8 +63,8 @@ public interface Endpoint {
     @Multipart
     @POST("api/pendidikan/quiz_submit")
     Call<SubmitData> submitQuiz(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id,
-    @Part("quiz_id") RequestBody quiz_id, @Part("date_start") RequestBody date_start,@Part("date_end") RequestBody date_end, @Part("question_id[]") RequestBody question_id,
-                                  @Part("question_answer[]") RequestBody question_answer);
+    @Part("quiz_id") RequestBody quiz_id, @Part("date_start") RequestBody date_start,@Part("date_end") RequestBody date_end, @Part("questions[][question_id]") RequestBody question_id,
+                                  @Part("questions[][question_answer]") RequestBody question_answer);
 
     @Multipart
     @POST("api/pendidikan/quizlist")

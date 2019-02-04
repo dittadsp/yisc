@@ -71,7 +71,7 @@ public class QuestionFragment extends Fragment {
     TextView txtquestion,txttimer;
     QuestionsList questionsList;
      int qid = 1;
-     String user_id,id;
+     String user_id,id,member_id;
      LinearLayout mLinearLayout,sLinearLayout;
      private View view;
     String[] option ={"A","B","C","D","E"};
@@ -110,7 +110,7 @@ public class QuestionFragment extends Fragment {
          id  = bundle.getString("quiz_id", "");
         question(KEY_ANDROID, "", ""+id);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
-        user_id = sharedPref.getString("id", "");
+        member_id = sharedPref.getString("id", "");
     }
 
     private void question(String key, String type, String quiz_id) {
@@ -215,8 +215,8 @@ public class QuestionFragment extends Fragment {
                 for (int i = 0; i < questionsList.getOptions().size(); i++)
                 {
                     if (i == selection) {
-                        Toast.makeText(getContext(), option[i], Toast.LENGTH_LONG).show();
-                        correctasw.add(option[i]);
+                        Toast.makeText(getContext(), listOption.get(i).getOptionValue(), Toast.LENGTH_LONG).show();
+                        correctasw.add( listOption.get(i).getOptionValue());
                     }
                 }
                 setQuestionView();
@@ -256,8 +256,8 @@ public class QuestionFragment extends Fragment {
                 for (int i = 0; i < questionsList.getOptions().size(); i++)
                 {
                     if (i == selection) {
-                        Toast.makeText(getContext(), option[i], Toast.LENGTH_LONG).show();
-                        correctasw.add(option[i]);
+                        Toast.makeText(getContext(), listOption.get(i).getOptionValue(), Toast.LENGTH_LONG).show();
+                        correctasw.add(listOption.get(i).getOptionValue());
                     }
                 }
                 setQuestionView();
@@ -274,8 +274,8 @@ public class QuestionFragment extends Fragment {
                     for (int i = 0; i < questionsList.getOptions().size(); i++)
                     {
                         if (i == selection) {
-                            Toast.makeText(getContext(), option[i], Toast.LENGTH_LONG).show();
-                            correctasw.add(option[i]);
+                            Toast.makeText(getContext(),listOption.get(i).getOptionValue(), Toast.LENGTH_LONG).show();
+                            correctasw.add( listOption.get(i).getOptionValue());
                         }
                     }
 
