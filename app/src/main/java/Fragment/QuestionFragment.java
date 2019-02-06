@@ -71,7 +71,7 @@ public class QuestionFragment extends Fragment {
     TextView txtquestion,txttimer;
     QuestionsList questionsList;
      int qid = 1;
-     String user_id,id,member_id;
+     String user_id,quiz_id,member_id;
      LinearLayout mLinearLayout,sLinearLayout;
      private View view;
     String[] option ={"A","B","C","D","E"};
@@ -81,7 +81,7 @@ public class QuestionFragment extends Fragment {
     OptionList currentO;
     Button btnsubmit;
     ArrayList<String> correctasw = new ArrayList<String>();
-    Question question;
+    ArrayList<Question> questions;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_question, container, false);
@@ -107,8 +107,8 @@ public class QuestionFragment extends Fragment {
         pDialog.setCancelable(true);
         pDialog.show();
         Bundle bundle = this.getArguments();
-         id  = bundle.getString("quiz_id", "");
-        question(KEY_ANDROID, "", ""+id);
+        quiz_id  = bundle.getString("quiz_id", "");
+        question(KEY_ANDROID, "", ""+quiz_id);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         member_id = sharedPref.getString("id", "");
     }
@@ -279,7 +279,7 @@ public class QuestionFragment extends Fragment {
                         }
                     }
 
-                    submitAnswer();
+                    submitAnswer2();
                 }
             });
             btnnext.setVisibility(View.GONE);
@@ -293,13 +293,15 @@ public class QuestionFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String end = dateFormat.format(date);
-        question = new Question();
-
+        questions = new ArrayList<Question>();
+        String question_id, question_answer;
         for(int i = 0; i<listQuiz.size();i++){
-          question.setQuestion_id(listQuiz.get(i).getQuestion_id());
-          question.setQuestion_answer(correctasw.get(i));
+            question_id = listQuiz.get(i).getQuestion_id();
+            question_answer = correctasw.get(i);
+            questions.add(new Question(question_id,question_answer));
         }
-        final SubmitModel submitModel = new SubmitModel(KEY_ANDROID,user_id,""+id,getCurrentDateTime(),end,question);
+
+        final SubmitModel submitModel = new SubmitModel(KEY_ANDROID,"1190240",""+quiz_id,getCurrentDateTime(),end,questions);
         RetroClient.getClient().create(Endpoint.class).responseSubmit(submitModel).enqueue(new Callback<SubmitData>() {
             @Override
             public void onResponse(Call<SubmitData> call, Response<SubmitData> response) {
@@ -329,8 +331,8 @@ public class QuestionFragment extends Fragment {
         }
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
-        RequestBody u_user_id = RequestBody.create(MediaType.parse("text/plain"), "1190105");
-        RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), ""+id);
+        RequestBody u_user_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
+        RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), ""+quiz_id);
         RequestBody u_date_start = RequestBody.create(MediaType.parse("text/plain"), ""+getCurrentDateTime());
         RequestBody u_date_end = RequestBody.create(MediaType.parse("text/plain"), ""+end);
         RequestBody u_question_id = RequestBody.create(MediaType.parse("text/plain"), ""+listQuiz);

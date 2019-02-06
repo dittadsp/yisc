@@ -14,7 +14,7 @@ public class UserList {
     public static class UserListChild {
 
         private String id, ip_address, username, password, salt, email, activation_code, forgotten_password_code, forgotten_password_time,
-                remember_code, created_on, last_login, active, first_name, last_name, company, phone, user_id;
+                remember_code, created_on, last_login, active, first_name, last_name, company, phone, user_id,member_id;
 
 
         public void setId(String id) {
@@ -91,6 +91,14 @@ public class UserList {
 
         public String getUser_id() {
             return user_id;
+        }
+
+        public String getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(String member_id) {
+            member_id = member_id;
         }
 
         public String getUsername() {

@@ -5,6 +5,11 @@ import java.util.List;
 public class Question {
 
     private String question_id, question_answer;
+
+    public Question(String question_id, String question_answer){
+        this.question_id = question_id;
+        this.question_answer = question_answer;
+    }
     public void setQuestion_id(String question_id) {
         this.question_id = question_id;
     }

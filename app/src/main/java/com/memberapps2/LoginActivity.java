@@ -88,9 +88,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.i("response",j);
                     Log.i("response2", response.raw().request().url().toString());
                     pDialog.dismiss();
-                    if (response.body().data.getUser_id() != null ) {
+                    if (response.body().data.getMember_id() != null ) {
                         String name = response.body().data.getFirst_name();
-                        String userId = response.body().data.getUser_id();
+                        String userId = response.body().data.getMember_id();
                         String email = response.body().data.getUsername();
                         String phone = response.body().data.getPhone();
                         SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
