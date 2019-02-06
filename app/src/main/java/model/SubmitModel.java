@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SubmitModel {
-    private String key, user_id,quiz_id;
+    private String key, member_id,quiz_id;
     private String date_start,date_end;
     ArrayList<Question> questions;
-    public SubmitModel(String key, String user_id, String quiz_id, String date_start, String date_end, ArrayList<Question> questions){
+    public SubmitModel(String key, String member_id, String quiz_id, String date_start, String date_end, ArrayList<Question> questions){
         this.key = key;
-        this.user_id = user_id;
+        this.member_id = member_id;
         this.quiz_id = quiz_id;
         this.date_start = date_start;
         this.date_end = date_end;
@@ -25,8 +25,8 @@ public class SubmitModel {
         return quiz_id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getMember_id() {
+        return member_id;
     }
 
     public String getKey() {
