@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +18,15 @@ import com.memberapps2.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapter.NilaiAdapter;
 import connection.Endpoint;
 import helper.RetroClient;
+import model.Artikel;
+import model.Datum;
 import model.NilaiList;
+import model.NilaiModel;
+import model.QuestionModel;
+import model.QuestionsList;
 import model.UserNilai;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -33,13 +40,13 @@ public class Nilai extends Fragment {
     ListView lv;
     public static String KEY_ANDROID = "wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
-    final ArrayList<NilaiList.Datum> nilaiArrayList = new ArrayList<>();
-    adapter.NilaiAdapter nilaiAdapter;
-    List<NilaiList.Datum> listNilai;
+    final ArrayList<NilaiModel> nilaiArrayList = new ArrayList<>();
+    NilaiAdapter nilaiAdapter;
+    List<NilaiModel> listNilai;
     private int load = 1;
     private Context context;
     private boolean loadMore = false;
-    String quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat;
+    String quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat,quizmemberid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +54,7 @@ public class Nilai extends Fragment {
 
         lv = (ListView) view.findViewById(R.id.listViewNilai);
 
-        nilaiAdapter = new adapter.NilaiAdapter(getActivity().getApplicationContext(), nilaiArrayList);
+        nilaiAdapter = new NilaiAdapter(getContext(), nilaiArrayList);
         lv.setAdapter(nilaiAdapter);
         loadData();
         return view;
@@ -60,47 +67,36 @@ public class Nilai extends Fragment {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();
-        SharedPreferences sp = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        String id = sp.getString("id", "");
+        Bundle bundle = this.getArguments();
+        quizid  = bundle.getString("quiz_id", "");
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        memberid = sharedPref.getString("id", "");
 
-        nilai(KEY_ANDROID, "", "23");
+        nilai(KEY_ANDROID,  memberid);
     }
 
-    public void nilai(String key, String type, String user_id) {
+    public void nilai(String key, String memberid) {
         final UserNilai userNilai = new UserNilai();
         userNilai.setKey(key);
-        userNilai.setType(type);
-        userNilai.setUser_id(user_id);
-        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), "wkkssks0g88sss004wko08ok44kkw80osss40gkc");
-        RequestBody u_type = RequestBody.create(MediaType.parse("text/plain"), "");
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), "23");
-
-        RetroClient.getClient().create(Endpoint.class).getNilai(u_key, u_id).enqueue(new Callback<NilaiList>() {
+        userNilai.setUser_id(memberid);
+        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
+        final RequestBody member_id = RequestBody.create(MediaType.parse("text/plain"), memberid);
+        RetroClient.getClient().create(Endpoint.class).getNilai(u_key,member_id).enqueue(new Callback<NilaiList>() {
             @Override
             public void onResponse(Call<NilaiList> call, Response<NilaiList> response) {
-                if (response.isSuccessful()) {
-                    pDialog.dismiss();
-                    Gson gson = new Gson();
-                    String j = gson.toJson(response.body());
-                    Log.i("responsenilai", j);
-                    Log.i("responsenilai2", response.raw().request().url().toString());
+                if(response.isSuccessful()){
                     listNilai = response.body().getData();
-                    for (int i = 0; i < listNilai.size(); i++) {
-                        quiz = listNilai.get(i).getParticipantQuiz();
-                        total = listNilai.get(i).getParticipantTotal();
-                        id = listNilai.get(i).getId();
-                        memberid = listNilai.get(i).getParticipantMemberid();
-                        startdate = listNilai.get(i).getParticipantStartdate();
-                        enddate = listNilai.get(i).getParticipantEnddate();
-                        score = listNilai.get(i).getParticipantScore();
-                        name = listNilai.get(i).getParticipantName();
-                        hp = listNilai.get(i).getParticipantHp();
-                        email = listNilai.get(i).getParticipantEmail();
-                        createdat = listNilai.get(i).getCreatedAt();
-                        updateat = listNilai.get(i).getUpdatedAt();
-                        nilaiArrayList.add(new NilaiList.Datum(quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat));
+                    for(int i = 0; i< listNilai.size(); i++){
+                        quiz = listNilai.get(i).getParticipant_quiz();
+                        name = listNilai.get(i).getParticipant_name();
+                        startdate = listNilai.get(i).getParticipant_startdate();
+                        enddate = listNilai.get(i).getParticipant_enddate();
+                        quizid = listNilai.get(i).getParticipant_quizid();
+                        quizmemberid = listNilai.get(i).getParticipant_memberid();
+                        score = listNilai.get(i).getParticipant_score();
+
+                        nilaiArrayList.add(new NilaiModel(quiz,name,startdate,enddate,quizid,quizmemberid,score));
                     }
-                    nilaiAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -109,5 +105,7 @@ public class Nilai extends Fragment {
 
             }
         });
+
+
     }
 }

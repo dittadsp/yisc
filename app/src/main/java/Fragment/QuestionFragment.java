@@ -1,9 +1,13 @@
 package Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.memberapps2.Home;
 import com.memberapps2.R;
 
 import java.text.DateFormat;
@@ -178,6 +183,7 @@ public class QuestionFragment extends Fragment {
             public void onFinish() {
 
                 txttimer.setText("TIME'S UP!!"); //On finish change timer text
+                submitAnswerSuccess();
 
             }
         }.start();
@@ -279,13 +285,82 @@ public class QuestionFragment extends Fragment {
                         }
                     }
 
-                    submitAnswer2();
+                    submitAnswerSuccess();
                 }
             });
             btnnext.setVisibility(View.GONE);
         }
 
         qid++;
+    }
+
+    private void submitAnswerSuccess(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        String end = dateFormat.format(date);
+        HashMap<String,Object> param = new HashMap<>();
+        questions = new ArrayList<Question>();
+
+        param.put("date_start",getCurrentDateTime());
+        param.put("date_end",end);
+        param.put("key",KEY_ANDROID);
+        param.put("quiz_id",quiz_id);
+        param.put("member_id",member_id);
+        for(int i = 0; i<listQuiz.size();i++){
+            param.put("questions["+i+"]",listQuiz.get(i).getQuestion_id());
+            param.put("questions["+i+"]",correctasw.get(i));
+        }
+        RetroClient.getClient().create(Endpoint.class).responseSubmitQuiz(param).enqueue(new Callback<SubmitData>() {
+            @Override
+            public void onResponse(Call<SubmitData> call, Response<SubmitData> response) {
+                if (response.isSuccessful()) {
+                    Gson gson = new Gson();
+                    String j = gson.toJson(response.body());
+                    int correctasw,wrongasw,score,totalquestion;
+                    String message;
+                    boolean status;
+                    status = response.body().getStatus();
+                    message = response.body().getMessage();
+                    if(status == true) {
+                        score = response.body().getData().getScore();
+                        correctasw = response.body().getData().getCorrect_answer();
+                        wrongasw = response.body().getData().getWrong_answer();
+                        totalquestion = response.body().getData().getTotal_question();
+
+                        AlertDialog.Builder builder;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                        } else {
+                            builder = new AlertDialog.Builder(getContext());
+                        }
+                        builder.setTitle(message)
+                                .setMessage("Score "+"\n"+score+"Correct Answer "+correctasw+"\n"+"Wrong Answer "+wrongasw+"\n"+"Total Question "+totalquestion)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent myIntent = new Intent(getActivity(), Home.class);
+                                        getActivity().startActivity(myIntent);
+
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent myIntent = new Intent(getActivity(), Home.class);
+                                        getActivity().startActivity(myIntent);
+
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitData> call, Throwable t) {
+                Log.d("FAILED", call.toString());
+            }
+        });
     }
 
 

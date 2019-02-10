@@ -1,4 +1,4 @@
-package adapter;
+package Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,12 +13,13 @@ import com.memberapps2.R;
 import java.util.ArrayList;
 
 import model.NilaiList;
+import model.NilaiModel;
 
-public class NilaiAdapter extends ArrayAdapter<NilaiList.Datum> {
+public class NilaiAdapter extends ArrayAdapter<NilaiModel> {
     TextView tema, score, updateat;
     private Context context;
 
-    public NilaiAdapter(Context context, ArrayList<NilaiList.Datum> nilaiAdapter) {
+    public NilaiAdapter(Context context, ArrayList<NilaiModel> nilaiAdapter) {
         super(context, 0, nilaiAdapter);
         this.context = context;
     }
@@ -29,16 +30,13 @@ public class NilaiAdapter extends ArrayAdapter<NilaiList.Datum> {
             LayoutInflater layoutInflater = LayoutInflater.from(this.context);
             convertView = layoutInflater.inflate(R.layout.mylistnilai, null);
         }
-        NilaiList.Datum Datum = getItem(position);
+        NilaiModel nilaiModel = getItem(position);
         tema = (TextView) convertView.findViewById(R.id.txttema);
-        tema.setText(Datum.getParticipantQuiz());
+        tema.setText(nilaiModel.getParticipant_quiz());
         tema.setTextColor(Color.RED);
         score = (TextView) convertView.findViewById(R.id.txtscore);
-        score.setText(Datum.getParticipantScore());
+        score.setText(nilaiModel.getParticipant_score());
         score.setTextColor(Color.RED);
-        updateat = (TextView) convertView.findViewById(R.id.txtupdateat);
-        updateat.setText(Datum.getUpdatedAt());
-        updateat.setTextColor(Color.RED);
 
         return convertView;
     }

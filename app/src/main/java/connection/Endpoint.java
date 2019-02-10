@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Fragment.VideoKajian;
 import model.Artikel;
@@ -36,6 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -53,10 +55,11 @@ public interface Endpoint {
     @POST("api/pendidikan/quiz")
     Call<QuestionModel> responseQuiz(@Body UserMateri requestUser);
 
-//    @Headers({
-//            "Content-Type: application/json",
-//            "x-access-token: eyJhbGciOiJIU"
-//    })
+    @FormUrlEncoded
+    @POST("api/pendidikan/quiz_submit")
+    Call<SubmitData> responseSubmitQuiz(@FieldMap HashMap<String,Object>map);
+
+
     @POST("api/pendidikan/quiz_submit")
     Call<SubmitData> responseSubmit(@Body SubmitModel data);
 
@@ -84,7 +87,7 @@ public interface Endpoint {
 
     @Multipart
     @POST("api/pendidikan/nilailist")
-    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
+    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("member_id") RequestBody member_id);
 
     @GET("api/members/{key}/{user_id}")
     Call<UserMember> responseMember(@Query(value = "key") String key, @Query(value = "member_id") String user_id);

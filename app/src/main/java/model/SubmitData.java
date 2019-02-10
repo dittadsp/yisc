@@ -14,7 +14,7 @@ public class SubmitData {
     private String message;
     @SerializedName("data")
     @Expose
-    private List<Score> data = null;
+    private Score data = null;
 
     public Boolean getStatus() {
         return status;
@@ -32,9 +32,9 @@ public class SubmitData {
         this.message = message;
     }
 
-    public List<Score> getData() { return data;}
+    public Score getData() { return data;}
 
-    public void setData(List<Score> data) {
+    public void setData(Score data) {
         this.data = data;
     }
 }
