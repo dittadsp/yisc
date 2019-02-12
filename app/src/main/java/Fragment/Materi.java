@@ -43,7 +43,7 @@ public class Materi extends Fragment {
     private Context context;
     private boolean loadMore = false;
     String id, tema, category, semester, resume, video, file;
-
+    String userid;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_materi, container, false);
@@ -64,21 +64,14 @@ public class Materi extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
         SharedPreferences sp = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        String id = sp.getString("id","");
-
-        materi(KEY_ANDROID, "", "23");
+        userid = sp.getString("userid","");
+        materi(KEY_ANDROID, userid);
     }
 
-    public void materi(String key, String type, String user_id) {
+    public void materi(String key, String member_id) {
 
-        final UserMateri userMateri = new UserMateri();
-        userMateri.setKey(key);
-        userMateri.setType(type);
-        userMateri.setUser_id(user_id);
-        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), "wkkssks0g88sss004wko08ok44kkw80osss40gkc");
-        RequestBody u_type = RequestBody.create(MediaType.parse("text/plain"), "1");
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), "23");
-//        Log.i("valuemateri", userMateri.getKey() + " " + userMateri.getUser_id());
+        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
+         RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
 
         RetroClient.getClient().create(Endpoint.class).getMateri(u_key, u_id).enqueue(new Callback<MateriList>() {
             @Override

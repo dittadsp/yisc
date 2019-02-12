@@ -79,11 +79,11 @@ public interface Endpoint {
 
     @Multipart
     @POST("api/pendidikan/jadwallist")
-    Call<InfoListSchedule> getJadwal(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
+    Call<InfoListSchedule> getJadwal(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/materilist")
-    Call<MateriList> getMateri(@Part("key") RequestBody key, @Part("member_id") RequestBody user_id);
+    Call<MateriList> getMateri(@Part("key") RequestBody key, @Part("user_id") RequestBody user_id);
 
     @Multipart
     @POST("api/pendidikan/nilailist")

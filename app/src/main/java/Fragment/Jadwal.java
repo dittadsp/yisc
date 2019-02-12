@@ -58,6 +58,7 @@ public class Jadwal extends Fragment {
     private Context context;
     private boolean loadMore = false;
     String id, tema, tanggal, waktu, tempat, nama, semester, tipe;
+    String userid,quizid;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jadwal, container, false);
@@ -78,20 +79,14 @@ public class Jadwal extends Fragment {
         pDialog.setCancelable(true);
         pDialog.show();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
-        String id = sharedPref.getString("id", "");
+        userid = sharedPref.getString("userid", "");
 
-        schedule(KEY_ANDROID,"1","23");
+        schedule(KEY_ANDROID,userid);
     }
 
-    private void schedule(String key, String type, String user_id) {
-        //login
-        final UserSchedule userSchedule = new UserSchedule();
-        userSchedule.setKey("wkkssks0g88sss004wko08ok44kkw80osss40gkc");
-//        userSchedule.setType(type);
-        userSchedule.setUser_id("23");
-        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), "wkkssks0g88sss004wko08ok44kkw80osss40gkc");
-        RequestBody u_type= RequestBody.create(MediaType.parse("text/plain"), "1");
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), "23");
+    private void schedule(String key,  String userid) {
+        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"),userid );
 
         RetroClient.getClient().create(Endpoint.class).getJadwal(u_key,u_id).enqueue(new Callback<InfoListSchedule>() {
             @Override

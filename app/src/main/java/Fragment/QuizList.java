@@ -63,7 +63,7 @@ public class QuizList extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
                     question.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.frameinfoquiz, question);
+                    fragmentTransaction.replace(R.id.framesii, question);
                     fragmentTransaction.commit();
                 }
             }

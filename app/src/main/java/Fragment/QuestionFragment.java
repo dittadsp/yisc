@@ -300,15 +300,14 @@ public class QuestionFragment extends Fragment {
         String end = dateFormat.format(date);
         HashMap<String,Object> param = new HashMap<>();
         questions = new ArrayList<Question>();
-
+        param.put("key",KEY_ANDROID);
+        param.put("member_id",member_id);
+        param.put("quiz_id",quiz_id);
         param.put("date_start",getCurrentDateTime());
         param.put("date_end",end);
-        param.put("key",KEY_ANDROID);
-        param.put("quiz_id",quiz_id);
-        param.put("member_id",member_id);
         for(int i = 0; i<listQuiz.size();i++){
-            param.put("questions["+i+"]",listQuiz.get(i).getQuestion_id());
-            param.put("questions["+i+"]",correctasw.get(i));
+            param.put("questions["+i+"][question_id]",listQuiz.get(i).getQuestion_id());
+            param.put("questions["+i+"][question_answer]",correctasw.get(i));
         }
         RetroClient.getClient().create(Endpoint.class).responseSubmitQuiz(param).enqueue(new Callback<SubmitData>() {
             @Override
@@ -317,7 +316,7 @@ public class QuestionFragment extends Fragment {
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
                     int correctasw,wrongasw,score,totalquestion;
-                    String message;
+                    String message,title;
                     boolean status;
                     status = response.body().getStatus();
                     message = response.body().getMessage();
@@ -326,31 +325,11 @@ public class QuestionFragment extends Fragment {
                         correctasw = response.body().getData().getCorrect_answer();
                         wrongasw = response.body().getData().getWrong_answer();
                         totalquestion = response.body().getData().getTotal_question();
+                        showDialogSuccess(message,score,correctasw,wrongasw,totalquestion);
 
-                        AlertDialog.Builder builder;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-                        } else {
-                            builder = new AlertDialog.Builder(getContext());
-                        }
-                        builder.setTitle(message)
-                                .setMessage("Score "+"\n"+score+"Correct Answer "+correctasw+"\n"+"Wrong Answer "+wrongasw+"\n"+"Total Question "+totalquestion)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent myIntent = new Intent(getActivity(), Home.class);
-                                        getActivity().startActivity(myIntent);
+                    }else{
+                        showDialogFailed(message,message);
 
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent myIntent = new Intent(getActivity(), Home.class);
-                                        getActivity().startActivity(myIntent);
-
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
                     }
 
                 }
@@ -361,6 +340,60 @@ public class QuestionFragment extends Fragment {
                 Log.d("FAILED", call.toString());
             }
         });
+    }
+
+    private void showDialogSuccess(String message,int score,int correctasw,int wrongasw,int totalquestion){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setTitle(message)
+                .setMessage("Score "+"\n"+score+"Correct Answer "+correctasw+"\n"+"Wrong Answer "+wrongasw+"\n"+"Total Question "+totalquestion)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void showDialogFailed(String message,String content){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setTitle(message)
+                .setMessage(content)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 

@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button btnLogin = (Button) findViewById(R.id.btnlogin);
         btnLogin.setOnClickListener(this);
 
-
     }
 
     @Override
@@ -90,14 +89,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     pDialog.dismiss();
                     if (response.body().data.getMember_id() != null ) {
                         String name = response.body().data.getFirst_name();
-                        String userId = response.body().data.getMember_id();
+                        String memberid = response.body().data.getMember_id();
+                        String userid = response.body().data.getUser_id();
                         String email = response.body().data.getUsername();
                         String phone = response.body().data.getPhone();
                         SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
                         SharedPreferences.Editor prefEditor = sharedPref.edit();
                         prefEditor.putInt("isLogged",1);
                         prefEditor.putString("name",name);
-                        prefEditor.putString("id",userId);
+                        prefEditor.putString("id",memberid);
+                        prefEditor.putString("userid",userid);
                         prefEditor.putString("email",email);
                         prefEditor.putString("phone",phone);
                         prefEditor.commit();
