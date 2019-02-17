@@ -20,6 +20,7 @@ import com.memberapps2.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapter.InfoKajianAdapter;
 import connection.Endpoint;
 import helper.RetroClient;
 import retrofit2.Call;
@@ -31,7 +32,7 @@ public class InfoKajian extends Fragment {
 
     ProgressDialog pDialog;
     final ArrayList<model.InfoKajian.Datum> infokajian = new ArrayList<>();
-    adapter.InfoKajianAdapter infoKajianAdapter;
+    Adapter.InfoKajianAdapter infoKajianAdapter;
     List<model.InfoKajian.Datum> listdatum;
     List<model.InfoKajian.PostCat> categoryList;
     String id, post_title, post_date, post_url, post_picture, term_id, name, total_pages;
@@ -43,7 +44,7 @@ public class InfoKajian extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_info_kajian, container, false);
         lv = (ListView) view.findViewById(R.id.listViewinfokajian);
-        infoKajianAdapter = new adapter.InfoKajianAdapter(getActivity().getApplicationContext(), infokajian);
+        infoKajianAdapter = new InfoKajianAdapter(getActivity().getApplicationContext(), infokajian);
         lv.setAdapter(infoKajianAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

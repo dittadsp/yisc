@@ -1,13 +1,18 @@
 package Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.memberapps2.Home;
 import com.memberapps2.R;
 
 import java.util.ArrayList;
@@ -22,6 +28,7 @@ import java.util.List;
 
 import Adapter.QuizAdapter;
 import connection.Endpoint;
+import entity.IOnBackPressed;
 import helper.RetroClient;
 import model.InfoListQuiz;
 import model.InfoQuiz;
@@ -33,7 +40,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class QuizList extends Fragment {
+public class QuizList extends Fragment implements View.OnKeyListener {
     ListView lv;
     public static String KEY_ANDROID ="wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
@@ -45,19 +52,32 @@ public class QuizList extends Fragment {
     private Context context;
     private boolean loadMore = false;
     String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status,id_quiz;
+    FragmentManager fmgr ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    Intent myIntent = new Intent(getActivity(), Home.class);
+                    getActivity().startActivity(myIntent);
+                    return true;
+                }
+                return false;
+            }
+        });
         lv = (ListView) view.findViewById(R.id.listViewQuiz);
 
+        view.setOnKeyListener(this);
         quizAdapter = new QuizAdapter(getActivity().getApplicationContext(), quizArrayList);
         lv.setAdapter(quizAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if(quiz_status!="0") {
-                   QuestionFragment question = new QuestionFragment();
+                    QuestionFragment question = new QuestionFragment();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     Bundle bundle = new Bundle();
@@ -65,12 +85,41 @@ public class QuizList extends Fragment {
                     question.setArguments(bundle);
                     fragmentTransaction.replace(R.id.framesii, question);
                     fragmentTransaction.commit();
+                }else{
+                    showDialogFailed("Sorry","Quiz has already been expired");
                 }
             }
 
         });
         loadData();
         return view;
+    }
+
+    private void showDialogFailed(String message,String content){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setTitle(message)
+                .setMessage(content)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getActivity(), Home.class);
+                        getActivity().startActivity(myIntent);
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void loadData() {
@@ -125,4 +174,17 @@ public class QuizList extends Fragment {
 
     }
 
+
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

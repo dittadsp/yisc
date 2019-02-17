@@ -1,4 +1,4 @@
-package adapter;
+package Adapter;
 
 import android.content.Context;
 import android.graphics.Color;

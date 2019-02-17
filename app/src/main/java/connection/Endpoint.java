@@ -87,7 +87,7 @@ public interface Endpoint {
 
     @Multipart
     @POST("api/pendidikan/nilailist")
-    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("member_id") RequestBody member_id);
+    Call<NilaiList> getNilai(@Part("key") RequestBody key, @Part("user_id") RequestBody member_id);
 
     @GET("api/members/{key}/{user_id}")
     Call<UserMember> responseMember(@Query(value = "key") String key, @Query(value = "member_id") String user_id);

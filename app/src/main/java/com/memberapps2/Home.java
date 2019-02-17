@@ -26,6 +26,7 @@ import Fragment.Pendidikan;
 import Fragment.Pesan;
 import Fragment.Profile;
 import Fragment.Kajian;
+import entity.IOnBackPressed;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,12 +63,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.framequestion);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            finish();
-            System.exit(0);
         }
+ else {
+//            if (!(fragment instanceof IOnBackPressed)) {
+//                finish();
+////                Intent myIntent = new Intent(this, Home.class);
+////                getApplicationContext().startActivity(myIntent);
+//            }else{
+                finish();
+                System.exit(0);
+            }
+
     }
 
     @Override
@@ -90,6 +99,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void displaySelectedScreen(int itemId) {
 

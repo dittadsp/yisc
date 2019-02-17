@@ -2,17 +2,23 @@ package Fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.memberapps2.Home;
 import com.memberapps2.R;
 
@@ -40,28 +44,23 @@ import java.util.concurrent.TimeUnit;
 
 import Adapter.QuestionAdapter;
 import connection.Endpoint;
+import entity.BroadcastService;
+import entity.IOnBackPressed;
 import helper.RetroClient;
-import model.InfoListQuiz;
-import model.InfoQuiz;
-import model.MateriList;
 import model.OptionList;
 import model.Question;
 import model.QuestionModel;
 import model.QuestionsList;
 import model.SubmitData;
-import model.SubmitModel;
-import model.UserLogin;
-import model.UserMateri;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements IOnBackPressed {
     ListView lv;
     public static String KEY_ANDROID = "wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
@@ -87,13 +86,31 @@ public class QuestionFragment extends Fragment {
     Button btnsubmit;
     ArrayList<String> correctasw = new ArrayList<String>();
     ArrayList<Question> questions;
-    @Override
+    SharedPreferences sharedPref;
+    public boolean mTimerRunning;
+    int startDateTime = 0;
+    int time = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_question, container, false);
         txttimer = (TextView) view.findViewById(R.id.txttimer);
         btnsubmit = (Button) view.findViewById(R.id.btnsubmit);
-        loadData();
+
         getCurrentDateTime();
+//        getActivity().startService(new Intent(getActivity(), BroadcastService.class));
+//        Log.i("START", "Started service");
+        loadData();
+
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                   showDialogFailed("WARNING","You Can not Back while taking quiz");
+                    return true;
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -101,6 +118,10 @@ public class QuestionFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String start = dateFormat.format(date);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharedPref.edit();
+        prefEditor.putString("datestart",start);
+        prefEditor.commit();
         return start;
     }
 
@@ -113,9 +134,10 @@ public class QuestionFragment extends Fragment {
         pDialog.show();
         Bundle bundle = this.getArguments();
         quiz_id  = bundle.getString("quiz_id", "");
-        question(KEY_ANDROID, "", ""+quiz_id);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        question(KEY_ANDROID, "", ""+quiz_id);
         member_id = sharedPref.getString("id", "");
+
     }
 
     private void question(String key, String type, String quiz_id) {
@@ -172,16 +194,23 @@ public class QuestionFragment extends Fragment {
 
     //Start Countodwn method
     private void startTimer(int noOfMinutes) {
+//        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+//        int startDateTime = sharedPref.getInt("datettime", 0);
+//        if(startDateTime!=0){
+//            time = startDateTime;
+//        }else{
+//            time = noOfMinutes;
+//        }
+        //Convert milliseconds into hour,minute aand seconds
+
         CountDownTimer countDownTimer = new CountDownTimer(noOfMinutes, 1000) {
             public void onTick(long millisUntilFinished) {
-                long millis = millisUntilFinished;
-                //Convert milliseconds into hour,minute and seconds
-                String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis), TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-                txttimer.setText(hms);//set text
+                    long millis = millisUntilFinished;
+                    String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis), TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                    txttimer.setText(hms);
             }
 
             public void onFinish() {
-
                 txttimer.setText("TIME'S UP!!"); //On finish change timer text
                 submitAnswerSuccess();
 
@@ -190,9 +219,31 @@ public class QuestionFragment extends Fragment {
 
     }
 
+    private BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateGUI(intent); // or whatever method used to update your GUI fields
+        }
+    };
+
+    private void updateGUI(Intent intent) {
+        if (intent.getExtras() != null) {
+            long millisUntilFinished = intent.getLongExtra("countdown", 0);
+            long millis = millisUntilFinished;
+            String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis), TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+            txttimer.setText(hms);
+            Log.i("UPDATE GUI", "Countdown seconds remaining: " +  millisUntilFinished / 1000);
+        }
+    }
+
     private void takeAction()
     {
         int noOfMinutes = Integer.parseInt(questionsList.getQuiz_time()) * 60 * 1000;
+        time = noOfMinutes;
+//        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+//        SharedPreferences.Editor prefEditor = sharedPref.edit();
+//        prefEditor.putInt("datettime", time);
+//        prefEditor.commit();
         startTimer(noOfMinutes);
         txtquestion = (TextView) view.findViewById(R.id.txtquestion);
         txtquestion.setText(listQuiz.get(0).getQuestion_text());
@@ -205,6 +256,7 @@ public class QuestionFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
+        p.setMargins(15, 15, 15, 15);
 
         mLinearLayout.addView(radioGroup, p);
            for (int i = 0; i < listQuiz.get(0).getOptions().size(); i++) {
@@ -243,7 +295,7 @@ public class QuestionFragment extends Fragment {
                 LinearLayout.LayoutParams.FILL_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-
+        p.setMargins(15, 15, 15, 15);
 
         mLinearLayout.addView(radioGroup1, p);
         for(int i =0; i<listQuiz.get(qid).getOptions().size();i++)
@@ -297,13 +349,16 @@ public class QuestionFragment extends Fragment {
     private void submitAnswerSuccess(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
+
         String end = dateFormat.format(date);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        String start = sharedPref.getString("datestart", "");
         HashMap<String,Object> param = new HashMap<>();
         questions = new ArrayList<Question>();
         param.put("key",KEY_ANDROID);
         param.put("member_id",member_id);
         param.put("quiz_id",quiz_id);
-        param.put("date_start",getCurrentDateTime());
+        param.put("date_start",start);
         param.put("date_end",end);
         for(int i = 0; i<listQuiz.size();i++){
             param.put("questions["+i+"][question_id]",listQuiz.get(i).getQuestion_id());
@@ -397,71 +452,50 @@ public class QuestionFragment extends Fragment {
     }
 
 
-    private void submitAnswer2(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        String end = dateFormat.format(date);
-        questions = new ArrayList<Question>();
-        String question_id, question_answer;
-        for(int i = 0; i<listQuiz.size();i++){
-            question_id = listQuiz.get(i).getQuestion_id();
-            question_answer = correctasw.get(i);
-            questions.add(new Question(question_id,question_answer));
-        }
+//    @Override
+//    public void onStop() {
+//        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+//        SharedPreferences.Editor prefEditor = sharedPref.edit();
+//        prefEditor.putInt("datettime", time);
+//        prefEditor.commit();
+//        super.onStop();
+//    }
 
-        final SubmitModel submitModel = new SubmitModel(KEY_ANDROID,"1190240",""+quiz_id,getCurrentDateTime(),end,questions);
-        RetroClient.getClient().create(Endpoint.class).responseSubmit(submitModel).enqueue(new Callback<SubmitData>() {
-            @Override
-            public void onResponse(Call<SubmitData> call, Response<SubmitData> response) {
-                if (response.isSuccessful()) {
-                    Gson gson = new Gson();
-                    String j = gson.toJson(response.body());
-                    Log.d("ISI",j);
-                    Log.d("RESPONSE",response.raw().request().url().toString());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<SubmitData> call, Throwable t) {
-                Log.d("FAILED", call.toString());
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getActivity().registerReceiver(br, new IntentFilter(BroadcastService.COUNTDOWN_BR));
+        Log.i("on resume", "Registered broacast receiver");
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+//        getActivity().unregisterReceiver(br);
+        Log.i("on pause", "Unregistered broacast receiver");
+    }
 
-    private void submitAnswer() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        String end = dateFormat.format(date);
-
-        for(int i = 0; i<listQuiz.size();i++){
-            arrQuest.put(listQuiz.get(i).getQuestion_id(),correctasw.get(i));
+    @Override
+    public void onStop() {
+        try {
+//            getActivity().unregisterReceiver(br);
+        } catch (Exception e) {
+            // Receiver was probably already stopped in onPause()
         }
+        super.onStop();
+    }
 
-        RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
-        RequestBody u_user_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
-        RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), ""+quiz_id);
-        RequestBody u_date_start = RequestBody.create(MediaType.parse("text/plain"), ""+getCurrentDateTime());
-        RequestBody u_date_end = RequestBody.create(MediaType.parse("text/plain"), ""+end);
-        RequestBody u_question_id = RequestBody.create(MediaType.parse("text/plain"), ""+listQuiz);
-        RequestBody u_question_asw= RequestBody.create(MediaType.parse("text/plain"), ""+correctasw);
+    @Override
+    public void onDestroy() {
+//        getActivity().stopService(new Intent(getActivity(), BroadcastService.class));
+        Log.i("On Destroy", "Stopped service");
+        super.onDestroy();
+    }
 
-        RetroClient.getClient().create(Endpoint.class).submitQuiz(u_key,u_user_id,u_quizid,u_date_start,u_date_end,u_question_id,u_question_asw).enqueue(new Callback<SubmitData>() {
-            @Override
-            public void onResponse(Call<SubmitData> call, Response<SubmitData> response) {
-                if (response.isSuccessful()) {
-                    Gson gson = new Gson();
-                    String j = gson.toJson(response.body());
-                    Log.d("ISI",j);
-                    Log.d("RESPONSE",response.raw().request().url().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SubmitData> call, Throwable t) {
-                Log.d("FAILED", call.toString());
-            }
-        });
-
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(getActivity(), Home.class);
+        getActivity().startActivity(myIntent);
     }
 }

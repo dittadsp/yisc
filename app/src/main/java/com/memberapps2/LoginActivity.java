@@ -1,8 +1,11 @@
 package com.memberapps2;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -86,26 +89,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String j = gson.toJson(response.body());
                     Log.i("response",j);
                     Log.i("response2", response.raw().request().url().toString());
-                    pDialog.dismiss();
-                    if (response.body().data.getMember_id() != null ) {
-                        String name = response.body().data.getFirst_name();
-                        String memberid = response.body().data.getMember_id();
-                        String userid = response.body().data.getUser_id();
-                        String email = response.body().data.getUsername();
-                        String phone = response.body().data.getPhone();
-                        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
-                        SharedPreferences.Editor prefEditor = sharedPref.edit();
-                        prefEditor.putInt("isLogged",1);
-                        prefEditor.putString("name",name);
-                        prefEditor.putString("id",memberid);
-                        prefEditor.putString("userid",userid);
-                        prefEditor.putString("email",email);
-                        prefEditor.putString("phone",phone);
-                        prefEditor.commit();
-                        Intent inten = new Intent(LoginActivity.this, Home.class);
-                        startActivity(inten);
+                    Boolean status = response.body().status;
+                    if(status == false){
+                        showDialogFailed("Failed","Bad Username or Password");
+                    }else {
+                        pDialog.dismiss();
+                        if (response.body().data.getMember_id() != null) {
+                            String name = response.body().data.getFirst_name();
+                            String memberid = response.body().data.getMember_id();
+                            String userid = response.body().data.getUser_id();
+                            String email = response.body().data.getUsername();
+                            String phone = response.body().data.getPhone();
+                            SharedPreferences sharedPref = getSharedPreferences("data", MODE_PRIVATE);
+                            SharedPreferences.Editor prefEditor = sharedPref.edit();
+                            prefEditor.putInt("isLogged", 1);
+                            prefEditor.putString("name", name);
+                            prefEditor.putString("id", memberid);
+                            prefEditor.putString("userid", userid);
+                            prefEditor.putString("email", email);
+                            prefEditor.putString("phone", phone);
+                            prefEditor.commit();
+                            Intent inten = new Intent(LoginActivity.this, Home.class);
+                            startActivity(inten);
+                        }
                     }
-//                    Log.i("YISC", "post submitted to API." + userList.g());
 
                 }
             }
@@ -120,7 +127,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void showDialogFailed(String message,String content){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(message)
+                .setMessage(content)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 }
 

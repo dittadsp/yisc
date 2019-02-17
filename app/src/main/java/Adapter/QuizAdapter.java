@@ -37,7 +37,7 @@ public class QuizAdapter extends ArrayAdapter<InfoQuiz> {
         quiz_title.setTextColor(Color.BLACK);
 
         quiz_desc = (TextView) convertView.findViewById(R.id.txtdesc);
-        quiz_desc.setText("Tauhid Desc");
+        quiz_desc.setText(quiz.getQuiz_desc());
         quiz_desc.setTextColor(Color.BLACK);
 
         judulstartdate = (TextView) convertView.findViewById(R.id.judulstartdate);

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.memberapps2.R;
 
+import Adapter.AdapterKajian;
+
 
 public class Kajian extends Fragment {
     TabLayout tabLayout;
@@ -22,7 +24,7 @@ public class Kajian extends Fragment {
 
         tabLayout = (TabLayout) view.findViewById(R.id.tab_layout_kajian);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new adapter.AdapterKajian(getChildFragmentManager()));
+        viewPager.setAdapter(new AdapterKajian(getChildFragmentManager()));
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
