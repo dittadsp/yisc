@@ -35,11 +35,12 @@ public class Sii extends Fragment {
 
         final String tatibDesc = "1. Mohon kerjakan soal menurut tipe soal , angkatan dasar mengerjakan soal angkatan dasar , angkatan " +
                 "lanjutan mengerjakan soal angkatan lanjutan"+
-                "\n"+"2. setiap soal memiliki waktu mohon mengerjakan sesuai waktu"+
+                "\n"+"2. DILARANG keras menyontek dalam bentuk apapun"+
                 "\n"+"3. soal tercatat ketika menekan tombol submit dan keluar hasil score"+"" +
                 "\n"+"4. soal hanya bisa dikerjakan 1x dan tercatat ketika menekan tombol submit"+
                 "\n"+"5 Kerjakan dengan jujur dan berdo'a terlebih dahulu sebelum mengerjakan"+"" +
-                "\n"+"6. Good Luck";
+                "\n"+"6 setiap soal memiliki waktu mohon mengerjakan sesuai waktu"+
+                "\n"+"7. Good Luck";
         View view = inflater.inflate(R.layout.fragment_sii, container, false);
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
