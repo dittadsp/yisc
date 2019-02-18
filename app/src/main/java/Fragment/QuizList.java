@@ -131,13 +131,13 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         pDialog.show();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         String id = sharedPref.getString("id", "");
-        schedule(KEY_ANDROID,"23");
+        schedule(KEY_ANDROID,id);
     }
 
-    private void schedule(String key,  String user_id) {
+    private void schedule(String key,  String member_id) {
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
 
         RetroClient.getClient().create(Endpoint.class).getQuiz(u_key,u_id).enqueue(new Callback<InfoListQuiz>() {
             @Override

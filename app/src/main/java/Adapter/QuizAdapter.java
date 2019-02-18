@@ -48,7 +48,6 @@ public class QuizAdapter extends ArrayAdapter<InfoQuiz> {
         quiz_start_date.setText(start_date);
         quiz_start_date.setTextColor(Color.BLACK);
 
-
         quiz_start_time = (TextView) convertView.findViewById(R.id.txtstarttime);
         start_time = quiz.getQuiz_start_date().substring(11,16);
         quiz_start_time.setText(start_time);
