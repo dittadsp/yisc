@@ -23,7 +23,12 @@ import com.google.gson.Gson;
 import com.memberapps2.Home;
 import com.memberapps2.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Adapter.QuizAdapter;
@@ -53,6 +58,7 @@ public class QuizList extends Fragment implements View.OnKeyListener {
     private boolean loadMore = false;
     String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status,id_quiz;
     FragmentManager fmgr ;
+    int outdated =0 ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
@@ -76,7 +82,11 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(quiz_status!="0") {
+                getOutDated();
+                if(getOutDated()==1){
+                    showDialogFailed("Sorry","Quiz has already been expired");
+                }
+                else{
                     QuestionFragment question = new QuestionFragment();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -85,8 +95,6 @@ public class QuizList extends Fragment implements View.OnKeyListener {
                     question.setArguments(bundle);
                     fragmentTransaction.replace(R.id.framesii, question);
                     fragmentTransaction.commit();
-                }else{
-                    showDialogFailed("Sorry","Quiz has already been expired");
                 }
             }
 
@@ -131,13 +139,14 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         pDialog.show();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         String id = sharedPref.getString("id", "");
-        schedule(KEY_ANDROID,"23");
+        schedule(KEY_ANDROID,id);
+
     }
 
-    private void schedule(String key,  String user_id) {
+    private void schedule(String key,  String member_id) {
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
 
         RetroClient.getClient().create(Endpoint.class).getQuiz(u_key,u_id).enqueue(new Callback<InfoListQuiz>() {
             @Override
@@ -174,7 +183,29 @@ public class QuizList extends Fragment implements View.OnKeyListener {
 
     }
 
+    private int getOutDated(){
+         outdated = 0;
+        Calendar cal;
+         String start ="",end="";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        for(int i =0; i<listQuiz.size();i++){
+             start = listQuiz.get(i).getQuiz_start_date();
+             end = listQuiz.get(i).getQuiz_end_date();
 
+            Date strDate = null;
+            try {
+                strDate = dateFormat.parse(end);
+                if (System.currentTimeMillis() > strDate.getTime()) {
+                    outdated = 1;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return outdated;
+    }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
