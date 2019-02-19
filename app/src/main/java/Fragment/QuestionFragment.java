@@ -44,8 +44,8 @@ import java.util.concurrent.TimeUnit;
 
 import Adapter.QuestionAdapter;
 import connection.Endpoint;
-import entity.BroadcastService;
-import entity.IOnBackPressed;
+//import entity.BroadcastService;
+//import entity.IOnBackPressed;
 import helper.RetroClient;
 import model.OptionList;
 import model.Question;
@@ -60,7 +60,8 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class QuestionFragment extends Fragment implements IOnBackPressed {
+//public class QuestionFragment extends Fragment implements IOnBackPressed {
+public class QuestionFragment extends Fragment {
     ListView lv;
     public static String KEY_ANDROID = "wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
@@ -493,9 +494,9 @@ public class QuestionFragment extends Fragment implements IOnBackPressed {
         super.onDestroy();
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent myIntent = new Intent(getActivity(), Home.class);
-        getActivity().startActivity(myIntent);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent myIntent = new Intent(getActivity(), Home.class);
+//        getActivity().startActivity(myIntent);
+//    }
 }

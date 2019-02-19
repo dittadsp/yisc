@@ -46,7 +46,7 @@ public class Nilai extends Fragment {
     private int load = 1;
     private Context context;
     private boolean loadMore = false;
-    String quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat,quizmemberid;
+    String quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat, userid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class Nilai extends Fragment {
 
         lv = (ListView) view.findViewById(R.id.listViewNilai);
 
-        nilaiAdapter = new NilaiAdapter(getContext(), nilaiArrayList);
+        nilaiAdapter = new NilaiAdapter(getActivity().getApplicationContext(), nilaiArrayList);
         lv.setAdapter(nilaiAdapter);
         loadData();
         return view;
@@ -67,36 +67,42 @@ public class Nilai extends Fragment {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();
-        Bundle bundle = this.getArguments();
-        quizid  = bundle.getString("quiz_id", "");
+//        Bundle bundle = this.getArguments();
+//        quizid  = bundle.getString("quiz_id", "");
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
-        memberid = sharedPref.getString("id", "");
+        userid = sharedPref.getString("userid", "");
 
-        nilai(KEY_ANDROID,  memberid);
+        nilai(KEY_ANDROID,  userid);
     }
 
-    public void nilai(String key, String memberid) {
+    public void nilai(String key, String user_id) {
         final UserNilai userNilai = new UserNilai();
         userNilai.setKey(key);
-        userNilai.setUser_id(memberid);
+        userNilai.setUser_id(user_id);
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
-        final RequestBody member_id = RequestBody.create(MediaType.parse("text/plain"), memberid);
+        final RequestBody member_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
         RetroClient.getClient().create(Endpoint.class).getNilai(u_key,member_id).enqueue(new Callback<NilaiList>() {
             @Override
             public void onResponse(Call<NilaiList> call, Response<NilaiList> response) {
                 if(response.isSuccessful()){
+                    pDialog.dismiss();
                     listNilai = response.body().getData();
                     for(int i = 0; i< listNilai.size(); i++){
-                        quiz = listNilai.get(i).getParticipant_quiz();
-                        name = listNilai.get(i).getParticipant_name();
-                        startdate = listNilai.get(i).getParticipant_startdate();
-                        enddate = listNilai.get(i).getParticipant_enddate();
-                        quizid = listNilai.get(i).getParticipant_quizid();
-                        quizmemberid = listNilai.get(i).getParticipant_memberid();
-                        score = listNilai.get(i).getParticipant_score();
-
-                        nilaiArrayList.add(new NilaiModel(quiz,name,startdate,enddate,quizid,quizmemberid,score));
+                        quiz = listNilai.get(i).getParticipantQuiz();
+                        total = listNilai.get(i).getParticipantTotal();
+                        id = listNilai.get(i).getId();
+                        memberid = listNilai.get(i).getParticipantMemberid();
+                        startdate = listNilai.get(i).getParticipantStartdate();
+                        enddate = listNilai.get(i).getParticipantEnddate();
+                        score = listNilai.get(i).getParticipantScore();
+                        name = listNilai.get(i).getParticipantName();
+                        hp = listNilai.get(i).getParticipantHp();
+                        email = listNilai.get(i).getParticipantEmail();
+                        createdat = listNilai.get(i).getCreatedAt();
+                        updateat = listNilai.get(i).getUpdatedAt();
+                        nilaiArrayList.add(new NilaiModel(quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat));
                     }
+                    nilaiAdapter.notifyDataSetChanged();
                 }
             }
 

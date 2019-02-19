@@ -1,5 +1,7 @@
 package com.memberapps2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,15 +28,17 @@ import Fragment.Pendidikan;
 import Fragment.Pesan;
 import Fragment.Profile;
 import Fragment.Kajian;
-import entity.IOnBackPressed;
+//import entity.IOnBackPressed;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     TextView txtNama;
+    private AlertDialog.Builder dlgAlert;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,30 +57,44 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        txtNama = (TextView)header.findViewById(R.id.txtnama);
-        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
+        txtNama = (TextView) header.findViewById(R.id.txtnama);
+        SharedPreferences sharedPref = getSharedPreferences("data", MODE_PRIVATE);
         String name = sharedPref.getString("name", "");
-        if(name!=""){
-        txtNama.setText(name);}
+        if (name != "") {
+            txtNama.setText(name);
+        }
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.framequestion);
+//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.framequestion);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
- else {
+        } else {
 //            if (!(fragment instanceof IOnBackPressed)) {
 //                finish();
-////                Intent myIntent = new Intent(this, Home.class);
-////                getApplicationContext().startActivity(myIntent);
+//                Intent myIntent = new Intent(this, Home.class);
+//                getApplicationContext().startActivity(myIntent);
 //            }else{
-                finish();
-                System.exit(0);
-            }
-
+            dlgAlert = new AlertDialog.Builder(Home.this);
+            dlgAlert.setTitle("Akan Keluar?");
+            dlgAlert.setCancelable(true);
+            dlgAlert.setPositiveButton("Exit",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            System.exit(0);
+                        }
+                    });
+            dlgAlert.setNegativeButton("Logout",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            logout();
+                        }
+                    });
+            dlgAlert.create().show();
+        }
     }
 
     @Override
@@ -133,12 +151,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 toolbar.setTitle("Kajian");
                 break;
             case R.id.nav_logout:
-                SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
-                SharedPreferences.Editor prefEditor = sharedPref.edit();
-                prefEditor.putInt("isLogged",0);
-                 prefEditor.commit();
-                Intent i = new Intent(this, WelcomeActivity.class);
-                startActivity(i);
+                logout();
                 break;
 
         }
@@ -161,6 +174,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
         displaySelectedScreen(id);
         return true;
+    }
+
+    public void logout() {
+        SharedPreferences sharedPref = getSharedPreferences("data", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharedPref.edit();
+        prefEditor.putInt("isLogged", 0);
+        prefEditor.commit();
+        Intent i = new Intent(this, WelcomeActivity.class);
+        startActivity(i);
     }
 
 

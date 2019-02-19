@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //    private UserAdapter userAdapter;
     EditText txtusername, txtpassword;
     Endpoint api;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +50,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Button btnLogin = (Button) findViewById(R.id.btnlogin);
         btnLogin.setOnClickListener(this);
-
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        System.exit(0);
-        finish();
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -87,12 +100,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
-                    Log.i("response",j);
+                    Log.i("response", j);
                     Log.i("response2", response.raw().request().url().toString());
                     Boolean status = response.body().status;
-                    if(status == false){
-                        showDialogFailed("Failed","Bad Username or Password");
-                    }else {
+                    if (status == false) {
+                        showDialogFailed("Failed", "Bad Username or Password");
+                    } else {
                         pDialog.dismiss();
                         if (response.body().data.getMember_id() != null) {
                             String name = response.body().data.getFirst_name();
@@ -119,15 +132,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<UserList> call, Throwable t) {
-                Toast.makeText(getApplication(),"Bad username or password",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), "Bad username or password", Toast.LENGTH_LONG).show();
                 Intent inten = new Intent(LoginActivity.this, WelcomeActivity.class);
                 startActivity(inten);
             }
         });
-
     }
 
-    private void showDialogFailed(String message,String content){
+    private void showDialogFailed(String message, String content) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -138,16 +150,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .setMessage(content)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-
+                        pDialog.dismiss();
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                })
+//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                    }
+//                })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

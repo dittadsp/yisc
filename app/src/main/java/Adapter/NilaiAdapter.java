@@ -32,11 +32,14 @@ public class NilaiAdapter extends ArrayAdapter<NilaiModel> {
         }
         NilaiModel nilaiModel = getItem(position);
         tema = (TextView) convertView.findViewById(R.id.txttema);
-        tema.setText(nilaiModel.getParticipant_quiz());
-        tema.setTextColor(Color.RED);
+        tema.setText("Quiz Title : " + nilaiModel.getParticipantQuiz());
+        tema.setTextColor(Color.BLACK);
         score = (TextView) convertView.findViewById(R.id.txtscore);
-        score.setText(nilaiModel.getParticipant_score());
+        score.setText("Score : " + nilaiModel.getParticipantScore());
         score.setTextColor(Color.RED);
+        updateat = (TextView) convertView.findViewById(R.id.txtupdateat);
+        updateat.setText("End Date : " + nilaiModel.getUpdatedAt());
+        updateat.setTextColor(Color.BLUE);
 
         return convertView;
     }

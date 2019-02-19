@@ -24,10 +24,12 @@
 
         <activity android:name=".LoginActivity"
             android:label="YISC Al Azhar"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"/>
         <activity android:name=".Home"
             android:label="YISC Al Azhar"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"/>
         <activity android:name=".VideoKajianActivity"
             android:label="YISC Al Azhar"
             android:theme="@style/AppTheme.NoActionBar"/>

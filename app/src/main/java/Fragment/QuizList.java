@@ -33,7 +33,7 @@ import java.util.List;
 
 import Adapter.QuizAdapter;
 import connection.Endpoint;
-import entity.IOnBackPressed;
+//import entity.IOnBackPressed;
 import helper.RetroClient;
 import model.InfoListQuiz;
 import model.InfoQuiz;
@@ -87,14 +87,14 @@ public class QuizList extends Fragment implements View.OnKeyListener {
                     showDialogFailed("Sorry","Quiz has already been expired");
                 }
                 else{
-                    QuestionFragment question = new QuestionFragment();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
-                    question.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.framesii, question);
-                    fragmentTransaction.commit();
+//                    QuestionFragment question = new QuestionFragment();
+//                    FragmentManager fragmentManager = getFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
+//                    question.setArguments(bundle);
+//                    fragmentTransaction.replace(R.id.framesii, question);
+//                    fragmentTransaction.commit();
                 }
             }
 
