@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.memberapps2.R;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import model.NilaiList;
 import model.NilaiModel;

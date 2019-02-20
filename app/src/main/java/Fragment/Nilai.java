@@ -41,7 +41,7 @@ public class Nilai extends Fragment {
     public static String KEY_ANDROID = "wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
     final ArrayList<NilaiModel> nilaiArrayList = new ArrayList<>();
-    NilaiAdapter nilaiAdapter;
+    NilaiAdapter nilaiAdapter; 
     List<NilaiModel> listNilai;
     private int load = 1;
     private Context context;
