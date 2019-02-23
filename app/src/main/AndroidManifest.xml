@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.memberapps2">
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:name=".AppController"
         android:allowBackup="true"
@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".BroadcastService" />
+        <service android:name="entity.BroadcastService" />
         <activity
             android:name=".WelcomeActivity"
             android:label="YISC Al Azhar"
@@ -33,7 +33,10 @@
         <activity android:name=".VideoKajianActivity"
             android:label="YISC Al Azhar"
             android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity android:name=".QuestionActivity1"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"/>
     </application>
 
 </manifest>

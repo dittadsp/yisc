@@ -46,7 +46,7 @@ public class Nilai extends Fragment {
     private int load = 1;
     private Context context;
     private boolean loadMore = false;
-    String quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat, userid;
+    String participant_quiz, total, id, quizid, memberid, participant_start_date, participant_end_date, score, participant_name, hp, email, createdat, updateat, userid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,19 +88,20 @@ public class Nilai extends Fragment {
                     pDialog.dismiss();
                     listNilai = response.body().getData();
                     for(int i = 0; i< listNilai.size(); i++){
-                        quiz = listNilai.get(i).getParticipantQuiz();
-                        total = listNilai.get(i).getParticipantTotal();
-                        id = listNilai.get(i).getId();
-                        memberid = listNilai.get(i).getParticipantMemberid();
-                        startdate = listNilai.get(i).getParticipantStartdate();
-                        enddate = listNilai.get(i).getParticipantEnddate();
-                        score = listNilai.get(i).getParticipantScore();
-                        name = listNilai.get(i).getParticipantName();
-                        hp = listNilai.get(i).getParticipantHp();
-                        email = listNilai.get(i).getParticipantEmail();
-                        createdat = listNilai.get(i).getCreatedAt();
-                        updateat = listNilai.get(i).getUpdatedAt();
-                        nilaiArrayList.add(new NilaiModel(quiz, total, id, quizid, memberid, startdate, enddate, score, name, hp, email, createdat, updateat));
+                        participant_quiz = listNilai.get(i).getParticipant_quiz();
+                        total = listNilai.get(i).getParticipant_score();
+                        quizid = listNilai.get(i).getParticipant_quizid();
+                        memberid = listNilai.get(i).getParticipant_memberid();
+                        participant_start_date = listNilai.get(i).getParticipant_startdate();
+                        participant_end_date = listNilai.get(i).getParticipant_enddate();
+                        score = listNilai.get(i).getParticipant_score();
+                        participant_name = listNilai.get(i).getParticipant_name();
+                        hp = listNilai.get(i).getParticipant_enddate();
+                        email = listNilai.get(i).getParticipant_enddate();
+                        createdat = listNilai.get(i).getParticipant_enddate();
+                        updateat = listNilai.get(i).getParticipant_memberid();
+                        nilaiArrayList.add(new NilaiModel( participant_quiz, participant_name, participant_start_date, participant_end_date,
+                                                   quizid, memberid, score));
                     }
                     nilaiAdapter.notifyDataSetChanged();
                 }

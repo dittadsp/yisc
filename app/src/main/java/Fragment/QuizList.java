@@ -21,6 +21,8 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.memberapps2.Home;
+import com.memberapps2.QuestionActivity;
+import com.memberapps2.QuestionActivity1;
 import com.memberapps2.R;
 
 import java.text.DateFormat;
@@ -58,7 +60,7 @@ public class QuizList extends Fragment implements View.OnKeyListener {
     private boolean loadMore = false;
     String quiz_id, quiz_title, quiz_desc,  quiz_start_date, quiz_end_date,quiz_status,id_quiz;
     FragmentManager fmgr ;
-    int outdated =0 ;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
@@ -87,6 +89,12 @@ public class QuizList extends Fragment implements View.OnKeyListener {
                     showDialogFailed("Sorry","Quiz has already been expired");
                 }
                 else{
+                    Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
+                    myIntent.putExtras(bundle);
+                    getActivity().startActivity(myIntent);
+
 //                    QuestionFragment question = new QuestionFragment();
 //                    FragmentManager fragmentManager = getFragmentManager();
 //                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -184,20 +192,26 @@ public class QuizList extends Fragment implements View.OnKeyListener {
     }
 
     private int getOutDated(){
-         outdated = 0;
-        Calendar cal;
+        int outdated = 0;
+        Calendar cal = Calendar.getInstance();;
          String start ="",end="";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
+        String getCurrentDateTime = dateFormat.format(cal.getTime());
         for(int i =0; i<listQuiz.size();i++){
              start = listQuiz.get(i).getQuiz_start_date();
              end = listQuiz.get(i).getQuiz_end_date();
 
-            Date strDate = null;
             try {
-                strDate = dateFormat.parse(end);
-                if (System.currentTimeMillis() > strDate.getTime()) {
+
+                date = dateFormat.parse(end);
+
+                if (getCurrentDateTime.compareTo(end)>0) {
                     outdated = 1;
+
+                }else{
+                    outdated = 0;
+
                 }
             } catch (ParseException e) {
                 e.printStackTrace();

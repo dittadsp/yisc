@@ -126,6 +126,7 @@ public class QuestionFragment extends Fragment {
         return start;
     }
 
+
     private void loadData() {
         Log.i("masuk", "loadData");
         pDialog = new ProgressDialog(getActivity());
@@ -172,7 +173,7 @@ public class QuestionFragment extends Fragment {
                         quiz_time = listQuiz.get(i).getQuiz_time();
 
                        questionsList =  new QuestionsList(question_id,question_text, quiz_time,listOption);
-//                        takeAction();
+                        takeAction();
                     }
                  Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
