@@ -468,7 +468,4 @@ public class QuestionActivity1 extends Activity {
         }
     };
 
-
-
-
 }
