@@ -44,6 +44,7 @@ public class Materi extends Fragment {
     private boolean loadMore = false;
     String id, tema, category, semester, resume, video, file;
     String userid;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_materi, container, false);
@@ -64,14 +65,14 @@ public class Materi extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
         SharedPreferences sp = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        userid = sp.getString("userid","");
-        materi(KEY_ANDROID, userid);
+//        userid = sp.getString("userid","");
+        materi(KEY_ANDROID, "402");
     }
 
-    public void materi(String key, String member_id) {
+    public void materi(String key, String user_id) {
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-         RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
 
         RetroClient.getClient().create(Endpoint.class).getMateri(u_key, u_id).enqueue(new Callback<MateriList>() {
             @Override
@@ -91,13 +92,13 @@ public class Materi extends Fragment {
                         resume = listMateri.get(i).getResume();
                         video = (String) listMateri.get(i).getVideo();
                         file = (String) listMateri.get(i).getFile();
-                        if (video == null){
+                        if (video == null) {
                             video = "kosong";
                         }
-                        if  (file == null){
+                        if (file == null) {
                             file = "kosong";
                         }
-                        materiArrayList.add(new MateriList.DatumMateri(id,tema,category,semester,resume,video,file));
+                        materiArrayList.add(new MateriList.DatumMateri(id, tema, category, semester, resume, video, file));
                     }
                     materiAdapter.notifyDataSetChanged();
 

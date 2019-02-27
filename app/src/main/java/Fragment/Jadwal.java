@@ -81,7 +81,8 @@ public class Jadwal extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
         userid = sharedPref.getString("userid", "");
 
-        schedule(KEY_ANDROID,userid);
+//        schedule(KEY_ANDROID,userid);
+        schedule(KEY_ANDROID,"402");
     }
 
     private void schedule(String key,  String userid) {
@@ -95,8 +96,8 @@ public class Jadwal extends Fragment {
                     pDialog.dismiss();
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
-                    Log.i("response",j);
-                    Log.i("response2", response.raw().request().url().toString());
+                    Log.i("responsejadwal",j);
+                    Log.i("responsejadwal2", response.raw().request().url().toString());
                     pDialog.dismiss();
                     listJadwal = response.body().getData();
                     for(int i = 0 ; i< listJadwal.size() ; i++) {
@@ -104,9 +105,9 @@ public class Jadwal extends Fragment {
                          tema     = listJadwal.get(i).getTema();
                          tanggal  = listJadwal.get(i).getTanggal();
                          waktu    = listJadwal.get(i).getWaktu();
+                         tempat   = listJadwal.get(i).getTempat();
                          nama     = listJadwal.get(i).getNama();
                          semester = listJadwal.get(i).getSemester();
-                         tempat   = listJadwal.get(i).getTempat();
                          tipe     = listJadwal.get(i).getTipe();
                         jadwalArrayList.add(new InfoJadwal(id,tema,tanggal,waktu,tempat,nama,semester,tipe));
                     }

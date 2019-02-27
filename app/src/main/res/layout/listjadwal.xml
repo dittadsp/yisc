@@ -41,18 +41,18 @@
         android:layout_marginLeft="100dp"
         >
         <TextView
-            android:id="@+id/nama"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Ust Subhan"
-            android:gravity="left"/>
-        <TextView
             android:id="@+id/materi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:text="halal haram...................."
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/nama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Ust Subhan"
             android:gravity="left"/>
         <TextView
             android:id="@+id/tempat"
