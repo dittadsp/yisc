@@ -1,7 +1,10 @@
 package Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import com.memberapps2.R;
 
 import java.util.ArrayList;
 
+import Fragment.Materi;
 import model.MateriList;
 
 public class MateriAdapter extends ArrayAdapter<MateriList.DatumMateri> {
@@ -31,25 +35,56 @@ public class MateriAdapter extends ArrayAdapter<MateriList.DatumMateri> {
             LayoutInflater layoutInflater = LayoutInflater.from(this.context);
             convertView = layoutInflater.inflate(R.layout.listmateri, null);
         }
-        MateriList.DatumMateri Datum = getItem(position);
+        final MateriList.DatumMateri Datum = getItem(position);
         judul = (TextView) convertView.findViewById(R.id.txtjudul);
         judul.setText(Datum.getTema());
         judul.setTextColor(Color.BLACK);
 
         resume = (TextView) convertView.findViewById(R.id.txtlihat);
-        resume.setMovementMethod(LinkMovementMethod.getInstance());
-        String linkresume = "<a href = '" + Datum.getResume() + "'>Lihat Resume</a>";
-        resume.setText(Html.fromHtml(linkresume));
+        if (Datum.getResume().equals("kosong")) {
+            resume.setText("Tidak ada resume");
+        } else {
 
+            resume.setText("Lihat Resume");
+            resume.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Materi materi = new Materi();
+//                    materi.showDialog(Datum.getTema(), Datum.getResume());
+                }
+            });
+        }
         video = (TextView) convertView.findViewById(R.id.txtvideo);
-        video.setMovementMethod(LinkMovementMethod.getInstance());
-        String linkvideo = "<a href = '" + Datum.getVideo() + "'>Video</a>";
-        video.setText(Html.fromHtml(linkvideo));
+        if (Datum.getVideo().equals("kosong")) {
+            video.setText("Tidak ada video");
+        } else {
+            video.setText("Download Video");
+            video.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Datum.getVideo().toString());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }
 
         file = (TextView) convertView.findViewById(R.id.txtdownload);
-        file.setMovementMethod(LinkMovementMethod.getInstance());
-        String linkfile = "<a href = '" + Datum.getFile() + "'>Materi File</a>";
-        file.setText(Html.fromHtml(linkfile));
+        if (Datum.getFile().equals("kosong")) {
+            file.setText("Tidak ada materi");
+        } else {
+            file.setText("Download Materi");
+            file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Datum.getFile().toString());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }
         return convertView;
     }
 }
