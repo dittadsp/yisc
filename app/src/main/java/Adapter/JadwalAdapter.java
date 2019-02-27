@@ -22,7 +22,7 @@ public class JadwalAdapter extends ArrayAdapter<InfoJadwal> {
     TextView tanggal, bulan, nama, materi, tempat;
     String date, month;
     String[] arrmonth = {"Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sept", "Okt", "Nov", "Des"};
-
+    String ruangan="";
     public JadwalAdapter(Context context, ArrayList<InfoJadwal> jadwalAdapter) {
         super(context, 0, jadwalAdapter);
         this.context = context;
@@ -51,7 +51,12 @@ public class JadwalAdapter extends ArrayAdapter<InfoJadwal> {
         materi.setText("Tema : " + jadwal.getTema());
         materi.setTextColor(Color.BLACK);
         tempat = (TextView) convertView.findViewById(R.id.tempat);
-        tempat.setText("Ruang : " + jadwal.getTempat());
+        if(jadwal.getTempat()== null){
+            ruangan = "";
+        }else{
+            ruangan = jadwal.getTempat();
+        }
+        tempat.setText("Ruang : " + ruangan);
         tempat.setTextColor(Color.BLACK);
 
         return convertView;
