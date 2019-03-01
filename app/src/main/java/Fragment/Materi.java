@@ -78,8 +78,9 @@ public class Materi extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
         SharedPreferences sp = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-//        userid = sp.getString("userid","");
-        materi(KEY_ANDROID, "402");
+        userid = sp.getString("userid", "");
+//        materi(KEY_ANDROID, "402");
+        materi(KEY_ANDROID, userid);
     }
 
     public void materi(String key, String user_id) {

@@ -48,7 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Jadwal extends Fragment {
     ListView lv;
-    public static String KEY_ANDROID ="wkkssks0g88sss004wko08ok44kkw80osss40gkc";
+    public static String KEY_ANDROID = "wkkssks0g88sss004wko08ok44kkw80osss40gkc";
     ProgressDialog pDialog;
     final ArrayList<InfoJadwal> jadwalArrayList = new ArrayList<>();
     JadwalAdapter jadwalAdapter;
@@ -58,7 +58,8 @@ public class Jadwal extends Fragment {
     private Context context;
     private boolean loadMore = false;
     String id, tema, tanggal, waktu, tempat, nama, semester, tipe;
-    String userid,quizid;
+    String userid, quizid;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jadwal, container, false);
@@ -78,38 +79,38 @@ public class Jadwal extends Fragment {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         userid = sharedPref.getString("userid", "");
 
-//        schedule(KEY_ANDROID,userid);
-        schedule(KEY_ANDROID,"402");
+        schedule(KEY_ANDROID, userid);
+//        schedule(KEY_ANDROID,"402");
     }
 
-    private void schedule(String key,  String userid) {
+    private void schedule(String key, String userid) {
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"),userid );
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), userid);
 
-        RetroClient.getClient().create(Endpoint.class).getJadwal(u_key,u_id).enqueue(new Callback<InfoListSchedule>() {
+        RetroClient.getClient().create(Endpoint.class).getJadwal(u_key, u_id).enqueue(new Callback<InfoListSchedule>() {
             @Override
             public void onResponse(Call<InfoListSchedule> call, Response<InfoListSchedule> response) {
                 if (response.isSuccessful()) {
                     pDialog.dismiss();
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
-                    Log.i("responsejadwal",j);
+                    Log.i("responsejadwal", j);
                     Log.i("responsejadwal2", response.raw().request().url().toString());
                     pDialog.dismiss();
                     listJadwal = response.body().getData();
-                    for(int i = 0 ; i< listJadwal.size() ; i++) {
-                         id = listJadwal.get(i).getId();
-                         tema     = listJadwal.get(i).getTema();
-                         tanggal  = listJadwal.get(i).getTanggal();
-                         waktu    = listJadwal.get(i).getWaktu();
-                         tempat   = listJadwal.get(i).getTempat();
-                         nama     = listJadwal.get(i).getNama();
-                         semester = listJadwal.get(i).getSemester();
-                         tipe     = listJadwal.get(i).getTipe();
-                        jadwalArrayList.add(new InfoJadwal(id,tema,tanggal,waktu,tempat,nama,semester,tipe));
+                    for (int i = 0; i < listJadwal.size(); i++) {
+                        id = listJadwal.get(i).getId();
+                        tema = listJadwal.get(i).getTema();
+                        tanggal = listJadwal.get(i).getTanggal();
+                        waktu = listJadwal.get(i).getWaktu();
+                        tempat = listJadwal.get(i).getTempat();
+                        nama = listJadwal.get(i).getNama();
+                        semester = listJadwal.get(i).getSemester();
+                        tipe = listJadwal.get(i).getTipe();
+                        jadwalArrayList.add(new InfoJadwal(id, tema, tanggal, waktu, tempat, nama, semester, tipe));
                     }
 
                     jadwalAdapter.notifyDataSetChanged();
@@ -119,7 +120,7 @@ public class Jadwal extends Fragment {
 
             @Override
             public void onFailure(Call<InfoListSchedule> call, Throwable t) {
-                Log.d("FAILED",call.toString());
+                Log.d("FAILED", call.toString());
             }
         });
 
