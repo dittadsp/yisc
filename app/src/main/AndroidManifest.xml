@@ -33,6 +33,9 @@
         <activity android:name=".VideoKajianActivity"
             android:label="YISC Al Azhar"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ResumeActivity"
+            android:label="YISC Al Azhar"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".QuestionActivity1"
             android:label="YISC Al Azhar"
             android:theme="@style/AppTheme.NoActionBar"

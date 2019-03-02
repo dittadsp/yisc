@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.memberapps2.R;
+import com.memberapps2.ResumeActivity;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,10 @@ public class MateriAdapter extends ArrayAdapter<MateriList.DatumMateri> {
             resume.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), ResumeActivity.class);
+                    intent.putExtra("content",Datum.getResume().toString());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getContext().startActivity(intent);
 //                    Materi materi = new Materi();
 //                    materi.showDialog(Datum.getTema(), Datum.getResume());
                 }

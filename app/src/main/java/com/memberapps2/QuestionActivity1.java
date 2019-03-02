@@ -454,7 +454,6 @@ public class QuestionActivity1 extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        unregisterReceiver(broadcastReceiver);
         Intent myIntent = new Intent(this, Home.class);
         startActivity(myIntent);
     }
