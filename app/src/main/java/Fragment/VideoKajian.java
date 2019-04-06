@@ -43,7 +43,7 @@ public class VideoKajian extends Fragment {
     ArrayList<Kajian> videoDetail = new ArrayList<>();;
     AdapterVideo adapterVideo;
     private FragmentActivity myContext;
-    String URL="https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCLGTGGY_KFCAtb11zhy6xHA&key=AIzaSyD9-nbKBoUys23cVeHpZFUd4Yj8di_a09A";
+    String URL="https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCLGTGGY_KFCAtb11zhy6xHA&key=AIzaSyD9-nbKBoUys23cVeHpZFUd4Yj8di_a09A&order=date&maxResults=20";
     @Override
     public void onAttach(Activity activity) {
 

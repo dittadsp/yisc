@@ -116,6 +116,7 @@ public class BroadcastService extends Service {
 
                 fn_update(str_testing);
             } else {
+                fn_finish("finish");
                 mEditor.putBoolean("finish", true).commit();
                 mTimer.cancel();
             }
@@ -136,9 +137,15 @@ public class BroadcastService extends Service {
         Log.e("Service finish","Finish");
     }
 
-    private void fn_update(String str_time){
+    public void fn_update(String str_time){
 
         intent.putExtra("time",str_time);
+        sendBroadcast(intent);
+    }
+
+    public void fn_finish(String finish){
+
+        intent.putExtra("finish",finish);
         sendBroadcast(intent);
     }
 }

@@ -100,7 +100,12 @@ public class QuestionActivity1 extends Activity {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String start = dateFormat.format(date);
-        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences( "data",MODE_PRIVATE);
+        SharedPreferences sharedPref1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         Boolean expired = sharedPref1.getBoolean("finish",false);
+        if(expired){
+            showDialogFailed("Warning","Your time has been over ");
+        }
         SharedPreferences.Editor prefEditor = sharedPref.edit();
         prefEditor.putString("datestart",start);
         prefEditor.commit();
@@ -193,8 +198,7 @@ public class QuestionActivity1 extends Activity {
             prefEditor.putString("datettime", quiz_time);
             prefEditor.commit();
         }
-        Intent intent_service = new Intent(getApplicationContext(), BroadcastService.class);
-        startService(intent_service);
+
         txtquestion = (TextView) findViewById(R.id.txtquestion);
         txtquestion.setText(listQuiz.get(0).getQuestion_text());
         txtquestion.setTextColor(Color.BLACK);
@@ -461,10 +465,31 @@ public class QuestionActivity1 extends Activity {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String str_time = intent.getStringExtra("time");
-            txttimer.setText(str_time);
+              String finish = intent.getStringExtra("finish");
 
-        }
+             if(finish!=null && finish.equals("finish"))
+             {
+                 showDialogFailed("Warning","TIME'S UP!");
+//                 for(int j =0; j<listQuiz.size();j++) {
+//                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                     SharedPreferences.Editor prefEditor = sharedPref.edit();
+//                     prefEditor.putString("finishquiz", listQuiz.get(j).getQuiz_id());
+//                     prefEditor.commit();
+//                 }
+             }else{
+                 String str_time = intent.getStringExtra("time");
+                 txttimer.setText(str_time);
+                 if(str_time.equals("00:00")){
+                     showDialogFailed("Warning","TIME'S UP!");
+                 }
+             }
+            }
     };
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        Intent intent_service = new Intent(getApplicationContext(), BroadcastService.class);
+//        startService(intent_service);
+    }
 }
