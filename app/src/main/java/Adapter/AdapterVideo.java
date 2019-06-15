@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,10 +16,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
-import com.memberapps2.AppController;
+import com.yisc.AppController;
 import com.memberapps2.R;
-import com.memberapps2.VideoKajianActivity;
-import com.squareup.picasso.Picasso;
+import com.yisc.VideoKajianActivity;
 
 import java.util.ArrayList;
 

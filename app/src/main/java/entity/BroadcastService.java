@@ -103,22 +103,24 @@ public class BroadcastService extends Service {
             int int_hours = Integer.valueOf(mpref.getString("datettime", ""));
 
             long int_timer = TimeUnit.MINUTES.toMillis(int_hours);
-            long long_hours = int_timer - diff;
-            long diffSeconds2 = long_hours / 1000 % 60;
-            long diffMinutes2 = long_hours / (60 * 1000) % 60;
+            if(int_timer !=0) {
+                long long_hours = int_timer - diff;
+                long diffSeconds2 = long_hours / 1000 % 60;
+                long diffMinutes2 = long_hours / (60 * 1000) % 60;
 //            long diffHours2 = long_hours / (60 * 60 * 1000) % 24;
 
 
-            if (long_hours > 0) {
-                String str_testing =  diffMinutes2 + ":" + diffSeconds2;
+                if (long_hours > 0) {
+                    String str_testing = diffMinutes2 + ":" + diffSeconds2;
 
-                Log.e("TIME", str_testing);
+                    Log.e("TIME", str_testing);
 
-                fn_update(str_testing);
-            } else {
-                fn_finish("finish");
-                mEditor.putBoolean("finish", true).commit();
-                mTimer.cancel();
+                    fn_update(str_testing);
+                } else {
+                    fn_finish("finish");
+                    mEditor.putBoolean("finish", true).commit();
+                    mTimer.cancel();
+                }
             }
         }catch (Exception e){
             mTimer.cancel();

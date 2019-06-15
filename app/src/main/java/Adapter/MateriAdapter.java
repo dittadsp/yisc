@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.memberapps2.R;
-import com.memberapps2.ResumeActivity;
+import com.yisc.ResumeActivity;
 
 import java.util.ArrayList;
 
-import Fragment.Materi;
 import model.MateriList;
 
 public class MateriAdapter extends ArrayAdapter<MateriList.DatumMateri> {

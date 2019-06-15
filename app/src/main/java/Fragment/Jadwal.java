@@ -2,9 +2,7 @@ package Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,33 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import Adapter.HomeAdapter;
 import Adapter.JadwalAdapter;
 import connection.Endpoint;
 import helper.RetroClient;
-import model.Artikel;
-import model.Category;
-import model.Datum;
 import model.InfoJadwal;
 import model.InfoListSchedule;
-import model.InfoPendidikan;
-import model.ListSchedule;
-import model.UserList;
-import model.UserLogin;
-import model.UserSchedule;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import com.google.gson.Gson;
-import com.memberapps2.Home;
-import com.memberapps2.LoginActivity;
 import com.memberapps2.R;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

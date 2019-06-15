@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.memberapps2.Home;
+import com.yisc.Home;
 //import com.memberapps2.QuestionActivity;
-import com.memberapps2.QuestionActivity1;
+import com.yisc.QuestionActivity1;
 import com.memberapps2.R;
 
 import java.text.DateFormat;
@@ -88,29 +87,25 @@ public class QuizList extends Fragment implements View.OnKeyListener {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent_service = new Intent(getContext(), BroadcastService.class);
                 getActivity().startService(intent_service);
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+                int quizid = sharedPref.getInt("quiz_id",0);
                 getOutDated();
                 if(getOutDated()==1 ){
                     showDialogFailed("Sorry","Quiz has already been expired");
-                    for(int k =0; k<listQuiz.size();k++) {
-                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        SharedPreferences.Editor prefEditor = sharedPref.edit();
-                        prefEditor.putString("finishquiz", listQuiz.get(k).getQuiz_id());
-                        prefEditor.commit();
-                    }
+
                 }else {
-                    for (int j = 0; j < listQuiz.size(); j++) {
-                        if (listQuiz.get(j).getQuiz_id().equals(timeExpired())) {
-                            showDialogFailed("Sorry", "your time has been over");
+//                    for (int j = 0; j < listQuiz.size(); j++) {
+                        if(listQuiz.get(i).getQuiz_id().equals(quiz_id)){
+                            showDialogFailed("Sorry", "your have taken this quiz or time is up");
                         }
                         else {
                             Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
                             Bundle bundle = new Bundle();
-                            bundle.putString("quiz_id", "" + listQuiz.get(i).getQuiz_id());
                             myIntent.putExtras(bundle);
                             getActivity().startActivity(myIntent);
 
                         }
-                    }
+//                    }
                 }
             }
 
@@ -205,7 +200,7 @@ public class QuizList extends Fragment implements View.OnKeyListener {
             if (getOutDated() != 1) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor prefEditor = sharedPref.edit();
-                id = sharedPref.getString("finishquiz", listQuiz.get(j).getQuiz_id());
+                id = sharedPref.getString("finishquiz","");
 
             }
         }
