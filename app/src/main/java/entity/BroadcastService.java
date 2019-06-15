@@ -101,7 +101,7 @@ public class BroadcastService extends Service {
 
             long diff = date_current.getTime() - date_diff.getTime();
             int int_hours = Integer.valueOf(mpref.getString("datettime", ""));
-
+            String str_testing = "";
             long int_timer = TimeUnit.MINUTES.toMillis(int_hours);
             if(int_timer !=0) {
                 long long_hours = int_timer - diff;
@@ -111,7 +111,7 @@ public class BroadcastService extends Service {
 
 
                 if (long_hours > 0) {
-                    String str_testing = diffMinutes2 + ":" + diffSeconds2;
+                     str_testing = diffMinutes2 + ":" + diffSeconds2;
 
                     Log.e("TIME", str_testing);
 

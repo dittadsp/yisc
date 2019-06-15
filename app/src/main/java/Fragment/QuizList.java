@@ -88,15 +88,26 @@ public class QuizList extends Fragment implements View.OnKeyListener {
                 Intent intent_service = new Intent(getContext(), BroadcastService.class);
                 getActivity().startService(intent_service);
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
-                int quizid = sharedPref.getInt("quiz_id",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                String  a = listQuiz.get(i).getQuiz_id();
+                prefEditor.putString("quiz_id",a);
+                prefEditor.commit();
+                String b = sharedPref.getString("quiz_id","");
+                int quizid = sharedPref.getInt("time",0);
+                int flagquiz = sharedPref.getInt("flagquiz",0);
+                int validate = Integer.parseInt(listQuiz.get(i).getQuiz_id()) + flagquiz;
                 getOutDated();
                 if(getOutDated()==1 ){
                     showDialogFailed("Sorry","Quiz has already been expired");
 
                 }else {
 //                    for (int j = 0; j < listQuiz.size(); j++) {
-                        if(listQuiz.get(i).getQuiz_id().equals(quiz_id)){
-                            showDialogFailed("Sorry", "your have taken this quiz or time is up");
+                    int check = Integer.parseInt(listQuiz.get(i).getQuiz_id());
+                    if(check<validate){
+                        showDialogFailed("Sorry", "you have taken this quiz");
+                    }
+                       else  if(listQuiz.get(i).getQuiz_id().equals(quizid)){
+                            showDialogFailed("Sorry", "your  time is up");
                         }
                         else {
                             Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
