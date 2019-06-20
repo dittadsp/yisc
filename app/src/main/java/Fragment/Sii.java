@@ -16,7 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.yisc.Home;
-import com.memberapps2.R;
+import com.yisc.R;
 
 import Adapter.InfoAdapter;
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 import Adapter.AbsensiAdapter;
 ;

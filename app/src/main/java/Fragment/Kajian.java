@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 import Adapter.AdapterKajian;
 

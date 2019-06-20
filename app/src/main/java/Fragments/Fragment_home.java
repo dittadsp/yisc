@@ -1,5 +1,5 @@
 package Fragments;
-import com.memberapps2.R;
+import com.yisc.R;
 
 
 import android.app.ProgressDialog;

@@ -1,19 +1,14 @@
 package Fragment;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +19,7 @@ import android.widget.TextView;
 import Adapter.MateriAdapter;
 import connection.Endpoint;
 import helper.RetroClient;
-import model.Datum;
 import model.MateriList;
-import model.UserMateri;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -34,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.google.gson.Gson;
-import com.memberapps2.R;
+import com.yisc.R;
 
 
 import java.util.ArrayList;

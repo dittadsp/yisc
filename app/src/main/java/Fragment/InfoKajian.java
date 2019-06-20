@@ -15,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.memberapps2.R;
+import com.yisc.R;
 
 import java.util.ArrayList;
 import java.util.List;

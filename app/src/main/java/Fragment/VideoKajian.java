@@ -21,7 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

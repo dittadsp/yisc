@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.yisc.Home;
-import com.memberapps2.R;
+import com.yisc.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

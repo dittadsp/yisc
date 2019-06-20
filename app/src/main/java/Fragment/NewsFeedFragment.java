@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import Adapter.NewsFeedAdapter;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 public class NewsFeedFragment extends Fragment {
 

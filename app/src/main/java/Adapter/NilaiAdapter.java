@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
-import model.NilaiList;
 import model.NilaiModel;
 
 public class NilaiAdapter extends ArrayAdapter<NilaiModel> {

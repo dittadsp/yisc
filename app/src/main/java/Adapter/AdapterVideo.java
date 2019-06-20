@@ -17,7 +17,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.yisc.AppController;
-import com.memberapps2.R;
+import com.yisc.R;
 import com.yisc.VideoKajianActivity;
 
 import java.util.ArrayList;

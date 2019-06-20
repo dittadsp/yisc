@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.google.gson.Gson;
-import com.memberapps2.R;
+import com.yisc.R;
 
 import java.util.ArrayList;
 import java.util.List;

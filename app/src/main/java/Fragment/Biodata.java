@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.memberapps2.R;
+import com.yisc.R;
 
 import connection.Endpoint;
 import helper.RetroClient;
