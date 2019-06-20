@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.memberapps2.Home;
+import com.yisc.Home;
 //import com.memberapps2.QuestionActivity;
-import com.memberapps2.QuestionActivity1;
+import com.yisc.QuestionActivity1;
 import com.memberapps2.R;
 
 import java.text.DateFormat;
@@ -36,6 +36,7 @@ import java.util.List;
 import Adapter.QuizAdapter;
 import connection.Endpoint;
 //import entity.IOnBackPressed;
+import entity.BroadcastService;
 import helper.RetroClient;
 import model.InfoListQuiz;
 import model.InfoQuiz;
@@ -84,25 +85,38 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent_service = new Intent(getContext(), BroadcastService.class);
+                getActivity().startService(intent_service);
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                String  a = listQuiz.get(i).getQuiz_id();
+                prefEditor.putString("quiz_id",a);
+                prefEditor.commit();
+                String b = sharedPref.getString("quiz_id","");
+                int quizid = sharedPref.getInt("time",0);
+                int flagquiz = sharedPref.getInt("flagquiz",0);
+                int validate = Integer.parseInt(listQuiz.get(i).getQuiz_id()) + flagquiz;
                 getOutDated();
-                if(getOutDated()==1){
+                if(getOutDated()==1 ){
                     showDialogFailed("Sorry","Quiz has already been expired");
-                }
-                else{
-                    Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
-                    myIntent.putExtras(bundle);
-                    getActivity().startActivity(myIntent);
 
-//                    QuestionFragment question = new QuestionFragment();
-//                    FragmentManager fragmentManager = getFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("quiz_id", ""+ listQuiz.get(i).getQuiz_id());
-//                    question.setArguments(bundle);
-//                    fragmentTransaction.replace(R.id.framesii, question);
-//                    fragmentTransaction.commit();
+                }else {
+//                    for (int j = 0; j < listQuiz.size(); j++) {
+                    int check = Integer.parseInt(listQuiz.get(i).getQuiz_id());
+                    if(check<validate){
+                        showDialogFailed("Sorry", "you have taken this quiz");
+                    }
+                       else  if(listQuiz.get(i).getQuiz_id().equals(quizid)){
+                            showDialogFailed("Sorry", "your  time is up");
+                        }
+                        else {
+                            Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
+                            Bundle bundle = new Bundle();
+                            myIntent.putExtras(bundle);
+                            getActivity().startActivity(myIntent);
+
+                        }
+//                    }
                 }
             }
 
@@ -191,6 +205,19 @@ public class QuizList extends Fragment implements View.OnKeyListener {
 
     }
 
+    public String timeExpired(){
+       String id = "";
+        for(int j =0; j<listQuiz.size();j++) {
+            if (getOutDated() != 1) {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                id = sharedPref.getString("finishquiz","");
+
+            }
+        }
+        return id;
+    }
+
     private int getOutDated(){
         int outdated = 0;
         Calendar cal = Calendar.getInstance();;
@@ -198,10 +225,11 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String getCurrentDateTime = dateFormat.format(cal.getTime());
+        String id = "";
         for(int i =0; i<listQuiz.size();i++){
              start = listQuiz.get(i).getQuiz_start_date();
              end = listQuiz.get(i).getQuiz_end_date();
-
+             id = listQuiz.get(i).getQuiz_id();
             try {
 
                 date = dateFormat.parse(end);
