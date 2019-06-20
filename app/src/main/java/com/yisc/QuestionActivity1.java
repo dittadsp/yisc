@@ -79,6 +79,7 @@ public class QuestionActivity1 extends Activity {
     public boolean mTimerRunning;
     int startDateTime = 0;
     int time = 0;
+    int flag = 0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_question);
@@ -104,6 +105,9 @@ public class QuestionActivity1 extends Activity {
 
     private void loadData() {
         Log.i("masuk", "loadData");
+        if(flag== 1){
+            showDialogFailed("warning","time is up");
+        }
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading Data.. Please wait...");
         pDialog.setIndeterminate(false);
@@ -114,10 +118,8 @@ public class QuestionActivity1 extends Activity {
 //        quiz_id  = getIntent().getExtras().getString("quiz_id");
         SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
         String quiz_id = sharedPref.getString("quiz_id","");
-        int flag = sharedPref.getInt("flaquiz",0);
-        if(flag== 1){
-            showDialogFailed("warning","time is up");
-        }
+         flag = sharedPref.getInt("flaquiz",0);
+
         question(KEY_ANDROID, "", ""+quiz_id);
         Intent getIntent = getIntent();
         member_id = sharedPref.getString("id","");
