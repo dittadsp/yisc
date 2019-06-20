@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.yisc.Home;
 //import com.memberapps2.QuestionActivity;
 import com.yisc.QuestionActivity1;
-import com.yisc.R;
+import com.memberapps2.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;
