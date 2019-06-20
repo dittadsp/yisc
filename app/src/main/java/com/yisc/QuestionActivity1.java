@@ -24,7 +24,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.memberapps2.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
