@@ -1,19 +1,16 @@
 package Fragment;
 
 import android.app.ProgressDialog;
-import android.media.tv.TvContract;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 public class Pendaftaran extends Fragment {
     String url = "https://ppab.yisc-alazhar.or.id/frontend/web/site/index?mobile-apps=1";

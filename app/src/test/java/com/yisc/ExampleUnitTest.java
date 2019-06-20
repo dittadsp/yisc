@@ -1,4 +1,4 @@
-package com.memberapps2;
+package com.yisc;
 
 import org.junit.Test;
 

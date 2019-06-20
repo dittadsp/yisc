@@ -1,15 +1,9 @@
 package Fragments;
 
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.memberapps2.R;
 
 public class DetailHome extends Fragment {
     WebView webView;

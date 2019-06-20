@@ -10,7 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 
 public class Pesan extends Fragment {

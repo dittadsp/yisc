@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import Adapter.AdapterProfile;
-import com.memberapps2.R;
+import com.yisc.R;
 
 public class Profile extends Fragment {
 

@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 public class InfoAdapter extends BaseAdapter {
     TextView text1, text2, text3;

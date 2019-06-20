@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import Adapter.AdapterPendidikan;
 
-import com.memberapps2.R;
+import com.yisc.R;
 
 public class Pendidikan extends Fragment {
 
