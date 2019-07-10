@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.webkit.WebView;
 
-import com.memberapps2.R;
 
 public class ResumeActivity extends Activity{
 

@@ -104,7 +104,7 @@ public class QuestionActivity1 extends Activity {
 
 
     private void loadData() {
-        Log.i("masuk", "loadData");
+        //Log.i("masuk", "loadData");
         if(flag== 1){
             showDialogFailed("warning","time is up");
         }
@@ -127,7 +127,7 @@ public class QuestionActivity1 extends Activity {
     }
 
     private void question(String key, String type, String quiz_id) {
-        Log.i("masuk", "question");
+        //Log.i("masuk", "question");
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
         RequestBody u_quizid = RequestBody.create(MediaType.parse("text/plain"), quiz_id);
@@ -139,8 +139,8 @@ public class QuestionActivity1 extends Activity {
                     pDialog.dismiss();
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
-                    Log.i("responsequestion", j);
-                    Log.i("responsequestion2", response.raw().request().url().toString());
+                    //Log.i("responsequestion", j);
+                   // Log.i("responsequestion2", response.raw().request().url().toString());
 
                     listQuiz = response.body().getData();
                     for (int i = 0; i < listQuiz.size(); i++) {
@@ -171,7 +171,7 @@ public class QuestionActivity1 extends Activity {
 
             @Override
             public void onFailure(Call<QuestionModel> call, Throwable t) {
-                Log.d("FAILED", call.toString());
+                //Log.d("FAILED", call.toString());
                 pDialog.dismiss();
             }
         });
@@ -354,7 +354,7 @@ public class QuestionActivity1 extends Activity {
 
             @Override
             public void onFailure(Call<SubmitData> call, Throwable t) {
-                Log.d("FAILED", call.toString());
+                //Log.d("FAILED", call.toString());
             }
         });
     }
