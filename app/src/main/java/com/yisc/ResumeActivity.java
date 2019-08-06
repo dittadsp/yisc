@@ -12,13 +12,13 @@ public class ResumeActivity extends Activity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resume);
+//        setContentView(R.layout.activity_resume);
         Intent intent = getIntent();
         String content = intent.getStringExtra("content");
 //        String encodedHtml = Base64.encodeToString(content.getBytes(),
 //                Base64.NO_PADDING);
-        WebView webview = (WebView)findViewById(R.id.webviewresume);
-        webview.loadData(content, "text/html","UTF-8");
+//        WebView webview = (WebView)findViewById(R.id.webviewresume);
+//        webview.loadData(content, "text/html","UTF-8");
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.WrapperListAdapter;
 
 import Fragment.Berita;
 import Fragment.Fragment_home;
@@ -31,9 +32,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     Toolbar toolbar;
     TextView txtNama;
+    Menu nav_menu;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +55,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        txtNama = (TextView)header.findViewById(R.id.txtnama);
-        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
+        txtNama = (TextView) header.findViewById(R.id.txtnama);
+        SharedPreferences sharedPref = getSharedPreferences("data", MODE_PRIVATE);
         String name = sharedPref.getString("name", "");
-        if(name!=""){
-        txtNama.setText(name);}
+        if (name != "") {
+            nav_menu = navigationView.getMenu();
+            nav_menu.findItem(R.id.nav_login).setVisible(false);
+            nav_menu.findItem(R.id.nav_profil).setVisible(true);
+            nav_menu.findItem(R.id.nav_pendidikan).setVisible(true);
+            nav_menu.findItem(R.id.nav_pesan).setVisible(true);
+            nav_menu.findItem(R.id.nav_logout).setVisible(true);
+            txtNama.setText(name);
+        } else {
+            nav_menu = navigationView.getMenu();
+            nav_menu.findItem(R.id.nav_login).setVisible(true);
+            nav_menu.findItem(R.id.nav_profil).setVisible(false);
+            nav_menu.findItem(R.id.nav_pendidikan).setVisible(false);
+            nav_menu.findItem(R.id.nav_pesan).setVisible(false);
+            nav_menu.findItem(R.id.nav_logout).setVisible(false);
+        }
     }
 
     @Override
@@ -122,12 +139,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment = new Kajian();
                 toolbar.setTitle("Kajian");
                 break;
+            case R.id.nav_login:
+                Intent k = new Intent(this, WelcomeActivity.class);
+                startActivity(k);
+                break;
             case R.id.nav_logout:
-                SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
+                SharedPreferences sharedPref = getSharedPreferences("data", MODE_PRIVATE);
                 SharedPreferences.Editor prefEditor = sharedPref.edit();
-                prefEditor.putInt("isLogged",0);
-                 prefEditor.commit();
-                Intent i = new Intent(this, WelcomeActivity.class);
+                prefEditor.putInt("isLogged", 0);
+                prefEditor.putString("name","");
+                prefEditor.commit();
+                Intent i = new Intent(this, Home.class);
                 startActivity(i);
                 break;
 
