@@ -14,7 +14,7 @@ import com.yisc.R;
 
 
 public class Pesan extends Fragment {
-    String url = "https://yisc-alazhar.or.id/#contact-us";
+    String url = "https://www.yisc-alazhar.or.id/contact-us-mobile/";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

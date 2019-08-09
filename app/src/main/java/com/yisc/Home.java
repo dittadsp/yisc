@@ -17,10 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.WrapperListAdapter;
 
-import Fragment.Berita;
-import Fragment.Fragment_home;
 import Fragment.NewsFeedFragment;
 import Fragment.Pendaftaran;
 import Fragment.Pendidikan;
@@ -53,6 +50,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
         View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
         txtNama = (TextView) header.findViewById(R.id.txtnama);
@@ -61,17 +59,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (name != "") {
             nav_menu = navigationView.getMenu();
             nav_menu.findItem(R.id.nav_login).setVisible(false);
-            nav_menu.findItem(R.id.nav_profil).setVisible(true);
+            nav_menu.findItem(R.id.nav_pendaftaran).setVisible(false);
+            nav_menu.findItem(R.id.nav_tentang).setVisible(false);
             nav_menu.findItem(R.id.nav_pendidikan).setVisible(true);
-            nav_menu.findItem(R.id.nav_pesan).setVisible(true);
+            nav_menu.findItem(R.id.nav_hubungi).setVisible(false);
             nav_menu.findItem(R.id.nav_logout).setVisible(true);
             txtNama.setText(name);
         } else {
             nav_menu = navigationView.getMenu();
             nav_menu.findItem(R.id.nav_login).setVisible(true);
-            nav_menu.findItem(R.id.nav_profil).setVisible(false);
+            nav_menu.findItem(R.id.nav_pendaftaran).setVisible(true);
+            nav_menu.findItem(R.id.nav_tentang).setVisible(true);
             nav_menu.findItem(R.id.nav_pendidikan).setVisible(false);
-            nav_menu.findItem(R.id.nav_pesan).setVisible(false);
+            nav_menu.findItem(R.id.nav_hubungi).setVisible(true);
             nav_menu.findItem(R.id.nav_logout).setVisible(false);
         }
     }
@@ -115,21 +115,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_home:
+            case R.id.nav_berita:
                 fragment = new NewsFeedFragment();
                 toolbar.setTitle("YISC AL AZHAR");
                 break;
-            case R.id.nav_profil:
+            case R.id.nav_tentang:
                 fragment = new Profile();
-                toolbar.setTitle("Profil");
+                toolbar.setTitle("Tentang");
                 break;
             case R.id.nav_pendidikan:
                 fragment = new Pendidikan();
                 toolbar.setTitle("Pendidikan");
                 break;
-            case R.id.nav_pesan:
+            case R.id.nav_hubungi:
                 fragment = new Pesan();
-                toolbar.setTitle("Pesan");
+                toolbar.setTitle("Hubungi");
                 break;
             case R.id.nav_pendaftaran:
                 fragment = new Pendaftaran();

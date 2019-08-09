@@ -3,37 +3,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_home"
-            android:title="Home" />
+            android:id="@+id/nav_berita"
+            android:icon="@drawable/icons_news"
+            android:title="Berita" />
         <item
-            android:id="@+id/nav_profil"
-            android:icon="@drawable/ic_menu_person"
-            android:title="Profil" />
+            android:id="@+id/nav_tentang"
+            android:icon="@drawable/icons_about"
+            android:title="Tentang" />
         <item
             android:id="@+id/nav_pendidikan"
-            android:icon="@drawable/ic_menu_school"
+            android:icon="@drawable/icons_school"
             android:title="Pendidikan" />
         <item
-            android:id="@+id/nav_pesan"
-            android:icon="@drawable/ic_menu_message"
-            android:title="Pesan" />
+            android:id="@+id/nav_hubungi"
+            android:icon="@drawable/icons_contacts"
+            android:title="Hubungi" />
         <item
             android:id="@+id/nav_pendaftaran"
-            android:icon="@drawable/ic_menu_person_add"
+            android:icon="@drawable/icons_add_user"
             android:title="Pendaftaran" />
         <item
             android:id="@+id/nav_kajian"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/icons_school"
             android:title="Kajian" />
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/icons_administrator"
             android:title="Login" />
 
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/icons_exit"
             android:title="Logout" />
     </group>
 </menu>
