@@ -47,7 +47,7 @@ public class BroadcastService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mpref = getApplicationContext().getSharedPreferences("data", MODE_PRIVATE);
         mEditor = mpref.edit();
         calendar = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("HH:mm:ss");

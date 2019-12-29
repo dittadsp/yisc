@@ -71,15 +71,15 @@ public class Materi extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
         SharedPreferences sp = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        userid = sp.getString("userid", "");
-        materi(KEY_ANDROID, "402");
+        userid = sp.getString("id", "");
+        materi(KEY_ANDROID, userid);
 //        materi(KEY_ANDROID, userid);
     }
 
-    public void materi(String key, String user_id) {
+    public void materi(String key, String member_id) {
 
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), key);
-        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody u_id = RequestBody.create(MediaType.parse("text/plain"), member_id);
 
         RetroClient.getClient().create(Endpoint.class).getMateri(u_key, u_id).enqueue(new Callback<MateriList>() {
             @Override

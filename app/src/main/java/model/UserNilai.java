@@ -2,7 +2,7 @@ package model;
 
 public class UserNilai {
 
-    private String key, type, user_id;
+    private String key, type, member_id;
 
     public void setKey(String key) { this.key = key;}
 
@@ -10,8 +10,8 @@ public class UserNilai {
         this.type = type;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setMember_id(String member_id) {
+        this.member_id = member_id;
     }
 
     public String getKey() {
@@ -22,8 +22,8 @@ public class UserNilai {
         return type;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getMember_id() {
+        return member_id;
     }
 
 }

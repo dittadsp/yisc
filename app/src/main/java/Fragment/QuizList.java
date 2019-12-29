@@ -86,30 +86,28 @@ public class QuizList extends Fragment implements View.OnKeyListener {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent_service = new Intent(getContext(), BroadcastService.class);
-                getActivity().startService(intent_service);
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
                 SharedPreferences.Editor prefEditor = sharedPref.edit();
                 String  a = listQuiz.get(i).getQuiz_id();
-                prefEditor.putString("quiz_id",a);
-                prefEditor.commit();
+//                prefEditor.putString("quiz_id",a);
+//                prefEditor.commit();
                 String b = sharedPref.getString("quiz_id","");
                 int quizid = sharedPref.getInt("time",0);
-                int flagquiz = sharedPref.getInt("flagquiz",0);
-                int validate = Integer.parseInt(listQuiz.get(i).getQuiz_id()) + flagquiz;
+                String flagquiz = sharedPref.getString("flagquiz","");
+                String validate = listQuiz.get(i).getQuiz_id() ;
                 getOutDated();
                 if(getOutDated()==1 ){
                     showDialogFailed("Sorry","Quiz has already been expired");
 
-                }else {
-//                    for (int j = 0; j < listQuiz.size(); j++) {
-                    int check = Integer.parseInt(listQuiz.get(i).getQuiz_id());
-                    if(check<validate){
+                }
+
+                   else if(a.equals(b)){
                         showDialogFailed("Sorry", "you have taken this quiz");
+//                    }
+//                        if (Integer.parseInt(validate) < Integer.parseInt(flagquiz) || Integer.parseInt(validate) == Integer.parseInt(flagquiz)) {
+//                            showDialogFailed("Sorry", "you have taken this quiz");
+//                        }
                     }
-                       else  if(listQuiz.get(i).getQuiz_id().equals(quizid)){
-                            showDialogFailed("Sorry", "your  time is up");
-                        }
                         else {
                             Intent myIntent = new Intent(getActivity(), QuestionActivity1.class);
                             Bundle bundle = new Bundle();
@@ -119,7 +117,7 @@ public class QuizList extends Fragment implements View.OnKeyListener {
                         }
 //                    }
                 }
-            }
+
 
         });
         loadData();

@@ -1,10 +1,13 @@
 package com.yisc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.solver.Goal;
@@ -115,36 +118,76 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.i("response",j);
                     Log.i("response2", response.raw().request().url().toString());
                     pDialog.dismiss();
-                    if (response.body().data.getUser_id() != null ) {
+                    if(response.body().data.getMember_id() == null){
+                        showDialogFailed("WARNING","username/password salah\n"+" " +
+                                "silahkan forgot password di http://internal.yisc-alazhar.or.id");
+                    }
+                    if (response.body().data.getMember_id() != null ) {
                         String name = response.body().data.getFirst_name();
-                        String userId = response.body().data.getUser_id();
+                        String member_Id = response.body().data.getMember_id();
                         String email = response.body().data.getUsername();
                         String phone = response.body().data.getPhone();
                         SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
                         SharedPreferences.Editor prefEditor = sharedPref.edit();
                         prefEditor.putInt("isLogged",1);
                         prefEditor.putString("name",name);
-                        prefEditor.putString("id",userId);
+                        prefEditor.putString("id",member_Id);
                         prefEditor.putString("email",email);
                         prefEditor.putString("phone",phone);
                         prefEditor.commit();
-                        Intent inten = new Intent(LoginActivity.this, Home.class);
-                        startActivity(inten);
-                    }
-//                    Log.i("YISC", "post submitted to API." + userList.g());
+                        if(member_Id == null){
+                            showDialogFailed("WARNING","username/password salah\n"+" " +
+                                    "silahkan forgot password di http://internal.yisc-alazhar.or.id");
+                        }else{
+                            Intent inten = new Intent(LoginActivity.this, Home.class);
+                            startActivity(inten);
+                        }
 
+                    }
+                    if (response.body().data.getMember_id() == null ) {
+                        showDialogFailed("WARNING","username/password salah\n"+" " +
+                                "silahkan forgot password di http://internal.yisc-alazhar.or.id");
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<UserList> call, Throwable t) {
-
+                showDialogFailed("WARNING","username/password salah\n"+" " +
+                        "silahkan forgot password di http://internal.yisc-alazhar.or.id");
             }
         });
 
     }
 
 
+    private void showDialogFailed(String message,String content){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(message)
+                .setMessage(content)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getApplicationContext(), Home.class);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getApplicationContext().startActivity(myIntent);
 
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent myIntent = new Intent(getApplicationContext(), Home.class);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getApplicationContext().startActivity(myIntent);
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }
 

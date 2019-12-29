@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -105,20 +106,15 @@ public class QuestionActivity1 extends Activity {
 
     private void loadData() {
         //Log.i("masuk", "loadData");
-        if(flag== 1){
-            showDialogFailed("warning","time is up");
-        }
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading Data.. Please wait...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
         Intent mIntent = new Intent(this, QuestionActivity1.class);
-//        Bundle bundle = mIntent.getExtras();
-//        quiz_id  = getIntent().getExtras().getString("quiz_id");
+
         SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
-        String quiz_id = sharedPref.getString("quiz_id","");
-         flag = sharedPref.getInt("flaquiz",0);
+         quiz_id = sharedPref.getString("quiz_id","");
 
         question(KEY_ANDROID, "", ""+quiz_id);
         Intent getIntent = getIntent();
@@ -139,10 +135,7 @@ public class QuestionActivity1 extends Activity {
                     pDialog.dismiss();
                     Gson gson = new Gson();
                     String j = gson.toJson(response.body());
-                    //Log.i("responsequestion", j);
-                   // Log.i("responsequestion2", response.raw().request().url().toString());
-
-                    listQuiz = response.body().getData();
+                     listQuiz = response.body().getData();
                     for (int i = 0; i < listQuiz.size(); i++) {
                         listOption = listQuiz.get(i).getOptions();
                         for (int k = 0; k < listOption.size(); k++) {
@@ -158,14 +151,8 @@ public class QuestionActivity1 extends Activity {
 
                         questionsList =  new QuestionsList(question_id,question_text, quiz_time,listOption);
                     }
-//                    Handler handler = new Handler();
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
                             takeAction(quiz_time);
 
-//                        }
-//                    }, 3000);
                 }
             }
 
@@ -177,21 +164,43 @@ public class QuestionActivity1 extends Activity {
         });
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String finish = intent.getStringExtra("finish");
+
+            if(finish!=null && finish.equals("finish"))
+            {
+                 SharedPreferences sharedPref =  getSharedPreferences( "data",MODE_PRIVATE);;
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putString("flagquiz", quiz_id);
+                prefEditor.putString("quiz_id", quiz_id);
+                prefEditor.commit();
+                showDialogFailed("Warning","TIME'S UP!");
+            }
+            str_time = intent.getStringExtra("time");
+            txttimer.setText(str_time);
+
+        }
+
+    };
 
     private void takeAction(String quiz_time)
     {
 
-        if(txttimer.getText().toString().equals("00:00")){
-            showDialogFailed("warning","your time is up");
-        }
+        Intent intent_service = new Intent(getApplicationContext(), BroadcastService.class);
+        startService(intent_service);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         String date_time = simpleDateFormat.format(calendar.getTime());
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = sharedPref.edit();
-        prefEditor.putString("calendar", date_time);
-        prefEditor.putString("datettime", quiz_time);
-        prefEditor.commit();
+        String qztime = sharedPref.getString("datettime","");
+        if(qztime == null || qztime == "") {
+            prefEditor.putString("calendar", date_time);
+            prefEditor.putString("datettime", quiz_time);
+            prefEditor.commit();
+        }
 
         txtquestion = (TextView) findViewById(R.id.txtquestion);
         txtquestion.setText(listQuiz.get(0).getQuestion_text());
@@ -303,9 +312,9 @@ public class QuestionActivity1 extends Activity {
 
     private void submitAnswerSuccess(){
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = sharedPref.edit();
-        prefEditor.putInt("flagquiz", 1);
+//        prefEditor.putString("flagquiz", quiz_id+1);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
@@ -339,9 +348,10 @@ public class QuestionActivity1 extends Activity {
                         wrongasw = response.body().getData().getWrong_answer();
                         totalquestion = response.body().getData().getTotal_question();
                         showDialogSuccess(message,score,correctasw,wrongasw,totalquestion);
-                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences sharedPref = getSharedPreferences("data",MODE_PRIVATE);
                         SharedPreferences.Editor prefEditor = sharedPref.edit();
                         prefEditor.putString("quiz_id", quiz_id);
+                        prefEditor.putString("flagquiz", quiz_id);
                         prefEditor.commit();
 
                     }else{
@@ -443,6 +453,7 @@ public class QuestionActivity1 extends Activity {
                 .show();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -453,7 +464,7 @@ public class QuestionActivity1 extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-//        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(broadcastReceiver);
     }
 
 
@@ -463,32 +474,6 @@ public class QuestionActivity1 extends Activity {
         Intent myIntent = new Intent(this, Home.class);
         startActivity(myIntent);
     }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-              String finish = intent.getStringExtra("finish");
-
-             if(finish!=null && finish.equals("finish"))
-             {
-                 showDialogFailed("Warning","TIME'S UP!");
-                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                 SharedPreferences.Editor prefEditor = sharedPref.edit();
-                 prefEditor.putString("time", quiz_id);
-             }
-                  str_time = intent.getStringExtra("time");
-                 txttimer.setText(str_time);
-                 if(str_time.equals("00:00")|| str_time.equals("0:00")|| str_time.equals(0)){
-                     showDialogFailed("Warning","TIME'S UP!");
-                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                     SharedPreferences.Editor prefEditor = sharedPref.edit();
-                     prefEditor.putString("time", quiz_id);
-
-
-                 }
-             }
-
-    };
 
     @Override
     protected void onStart() {

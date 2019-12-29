@@ -64,18 +64,18 @@ public class Nilai extends Fragment {
 //        Bundle bundle = this.getArguments();
 //        quizid  = bundle.getString("quiz_id", "");
         SharedPreferences sharedPref = getActivity().getSharedPreferences("data",MODE_PRIVATE);
-        userid = sharedPref.getString("userid", "");
+        userid = sharedPref.getString("id", "");
 
         nilai(KEY_ANDROID,  userid);
     }
 
-    public void nilai(String key, String user_id) {
+    public void nilai(String key, String member_id) {
         final UserNilai userNilai = new UserNilai();
         userNilai.setKey(key);
-        userNilai.setUser_id(user_id);
+        userNilai.setMember_id(member_id);
         RequestBody u_key = RequestBody.create(MediaType.parse("text/plain"), KEY_ANDROID);
-        final RequestBody member_id = RequestBody.create(MediaType.parse("text/plain"), user_id);
-        RetroClient.getClient().create(Endpoint.class).getNilai(u_key,member_id).enqueue(new Callback<NilaiList>() {
+        final RequestBody member_ids = RequestBody.create(MediaType.parse("text/plain"), member_id);
+        RetroClient.getClient().create(Endpoint.class).getNilai(u_key,member_ids).enqueue(new Callback<NilaiList>() {
             @Override
             public void onResponse(Call<NilaiList> call, Response<NilaiList> response) {
                 if(response.isSuccessful()){
